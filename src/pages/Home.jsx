@@ -80,8 +80,8 @@ export default function Home() {
           animate={{ opacity: 1, x: 0, rotate: 0 }}
           transition={{ duration: 0.7, delay: 2.7 }}
         >
-          <TiltCard className="hero-code-card panel-hot p-8 pt-20">
-            <div className="absolute left-8 top-7 z-10 flex gap-3">
+          <TiltCard className="hero-code-card panel-hot p-8">
+            <div className="mb-10 flex gap-3">
               <span className="h-3.5 w-3.5 rounded-full bg-[#ff5f57]" />
               <span className="h-3.5 w-3.5 rounded-full bg-[#ffbd2e]" />
               <span className="h-3.5 w-3.5 rounded-full bg-[#28c840]" />
