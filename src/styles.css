@@ -247,6 +247,25 @@ a {
   text-shadow: 0 0 26px rgba(0, 212, 255, 0.22);
 }
 
+.project-media {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(135deg, rgba(0, 212, 255, 0.12), transparent 34%, rgba(79, 172, 254, 0.12)),
+    #05080d;
+}
+
+.project-media img:not([src$=".svg"]) {
+  transition: transform 500ms ease, filter 500ms ease;
+}
+
+.project-card:hover .project-media img:not([src$=".svg"]) {
+  transform: scale(1.035);
+  filter: saturate(1.08) contrast(1.04);
+}
+
 .project-title {
   display: block;
   padding-bottom: 0.12em;

@@ -12,7 +12,7 @@ export const profile = {
   name: "Samvesh Saini",
   title: "Full Stack Developer & AI Application Developer",
   tagline:
-    "Building production-grade web applications, AI-powered tools, and scalable digital experiences.",
+    "Building AI-powered products, RAG systems, APIs, and scalable web applications.",
   intro:
     "CSE student with full-stack oriented experience building and deploying production-grade web applications. Skilled in React, Node.js, MongoDB, REST APIs, DSA, OOP, cloud deployment, and AI-powered application workflows.",
 };
@@ -31,6 +31,8 @@ export const projects = [
     name: "VideoIQ",
     subtitle: "AI Powered Video Performance Auditor",
     live: "https://videoiq-rag-chatbot.vercel.app/",
+    image: "/projects/videoiq.png",
+    featured: true,
     tech: [
       "React",
       "Vite",
@@ -69,6 +71,7 @@ export const projects = [
     name: "Fruitora",
     subtitle: "Full Stack Nutrition Platform",
     live: "https://fruitoria.vercel.app/",
+    image: "/projects/fruitora.png",
     tech: ["React", "Node.js", "Express.js", "MongoDB", "JWT", "Tailwind CSS", "Chart.js", "Leaflet"],
     problem:
       "Healthy eating decisions are easier when nutrition data, recipes, analytics, and location-aware interfaces live in one product.",
@@ -89,6 +92,30 @@ export const projects = [
     deployment: "Deployed on Vercel and Render with CI/CD through GitHub auto-deployment.",
   },
   {
+    name: "Binance Futures Testnet Trading Bot",
+    subtitle: "Python CLI Trading Bot",
+    live: "https://github.com/Samvesh/Binance-bot",
+    image: "/projects/binance-logo.svg",
+    tech: ["Python", "python-binance", "CLI", ".env", "Logging", "Validation"],
+    problem:
+      "Crypto order workflows need strict validation, clean failure messages, and safe credential handling before API requests are sent.",
+    how:
+      "The bot is a production-quality Python CLI application for Binance Futures Testnet that loads credentials from a .env file, validates command input, places MARKET, LIMIT, and STOP_LIMIT orders, and records API activity in logs.",
+    value:
+      "It demonstrates practical API integration, error handling, logging, modular CLI architecture, and safe testnet-only trading automation without hardcoded secrets.",
+    features: [
+      "BUY and SELL orders",
+      "MARKET, LIMIT, and STOP_LIMIT support",
+      "Binance Futures Testnet base URL",
+      "Symbol, side, type, quantity, price, and stop-price validation",
+      ".env credentials with no hardcoded secrets",
+      "API request, response, validation, network, Binance API, and exception logging",
+      "Separated client, order service, validator, logging, and CLI modules",
+    ],
+    deployment:
+      "Designed for local Python 3.11+ execution with virtual environment setup, requirements installation, .env credentials, and log review through logs/trading_bot.log.",
+  },
+  {
     name: "Bank Management System",
     subtitle: "Java Desktop Banking Simulation",
     tech: ["Java", "OOP", "File I/O"],
@@ -107,6 +134,26 @@ export const projects = [
       "Multi-account management",
     ],
     concepts: ["Encapsulation", "Inheritance", "Polymorphism", "File I/O"],
+  },
+  {
+    name: "Bank Management System C++",
+    subtitle: "C++ Banking Simulation",
+    tech: ["C++", "OOP", "File I/O"],
+    problem:
+      "The C++ banking system implements the same banking workflow as the Java version: account creation, deposits, withdrawals, balance tracking, interest calculations, and multi-account management.",
+    how:
+      "It is different from the Java banking system because the implementation is built around C++ compilation, standard library file streams, and closer control over data structures and type behavior instead of Java's JVM-based object model.",
+    value:
+      "It shows how the same banking feature set can be modeled in a lower-level compiled language while still applying OOP concepts and durable file-based persistence.",
+    features: [
+      "Account creation",
+      "Deposits",
+      "Withdrawals",
+      "Balance tracking",
+      "Interest calculations",
+      "Multi-account management",
+    ],
+    concepts: ["C++ OOP", "File I/O", "Compiled execution", "Data structure control"],
   },
   {
     name: "Plane Shooting Simulation",
