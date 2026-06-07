@@ -8,6 +8,7 @@ const visualClass = {
   Fruitora: "fruitora",
   "Bank Management System": "bank",
   "Plane Shooting Simulation": "game",
+  "Binance Bot": "binance",          
 };
 
 export default function Projects() {
@@ -17,7 +18,7 @@ export default function Projects() {
         <PageHeader eyebrow="Latest Projects" title="Production builds, not template demos.">
           <p>
             Real projects from the resume: deployed AI video auditing, a full-stack nutrition platform,
-            Java banking simulation, and a Python arcade game.
+            Java banking simulation, a Python arcade game, and a Binance futures trading bot.
           </p>
         </PageHeader>
         <a
@@ -30,7 +31,6 @@ export default function Projects() {
           <ArrowRight size={24} />
         </a>
       </div>
-
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {projects.map((project, index) => (
           <TiltCard key={project.name} delay={index * 0.05} className="project-card flex min-h-[660px] flex-col">
@@ -58,6 +58,16 @@ export default function Projects() {
                     className="mono inline-flex items-center gap-2 text-sm font-bold tracking-[0.16em] text-cyan-50 hover:text-[#00D4FF]"
                   >
                     Live Details
+                    <ExternalLink size={17} />
+                  </a>
+                ) : project.github ? (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mono inline-flex items-center gap-2 text-sm font-bold tracking-[0.16em] text-cyan-50 hover:text-[#00D4FF]"
+                  >
+                    GitHub Repo
                     <ExternalLink size={17} />
                   </a>
                 ) : (
