@@ -1,5 +1,4 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
-import { Download, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { contact } from "../data/portfolio.js";
@@ -74,7 +73,6 @@ export default function Layout({ children }) {
             download
             className="mono hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#4FACFE] to-[#00D4FF] px-6 py-3 text-sm font-bold tracking-[0.18em] text-[#0A0A0A] transition hover:-translate-y-0.5 hover:shadow-[0_0_34px_rgba(0,212,255,0.34)] lg:inline-flex"
           >
-            <Download size={16} />
             Resume
           </a>
 
@@ -82,9 +80,9 @@ export default function Layout({ children }) {
             type="button"
             aria-label="Toggle navigation"
             onClick={() => setOpen((value) => !value)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-cyan-100/20 bg-white/5 text-cyan-100 lg:hidden"
+            className="mono inline-flex h-11 items-center justify-center rounded-full border border-cyan-100/20 bg-white/5 px-4 text-xs font-bold tracking-[0.16em] text-cyan-100 lg:hidden"
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? "Close" : "Menu"}
           </button>
         </nav>
 
@@ -116,7 +114,6 @@ export default function Layout({ children }) {
                   download
                   className="mono mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-cyan-100 px-4 py-3 text-sm font-bold tracking-[0.16em] text-[#0A0A0A]"
                 >
-                  <Download size={16} />
                   Resume
                 </a>
               </div>

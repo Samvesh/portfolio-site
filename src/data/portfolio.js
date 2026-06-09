@@ -23,7 +23,7 @@ export const stackGroups = [
   { label: "Backend", items: ["Node.js", "Express.js", "FastAPI", "REST API", "SSE"] },
   { label: "Databases", items: ["MongoDB", "Mongoose", "ChromaDB", "File I/O"] },
   { label: "Cloud & Tools", items: ["Git/GitHub", "Vercel", "Render", "CI/CD"] },
-  { label: "AI", items: ["RAG", "Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings"] },
+  { label: "AI & Data", items: ["RAG", "Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings", "EDA", "Data Cleaning"] },
 ];
 
 export const projects = [
@@ -114,6 +114,52 @@ export const projects = [
     ],
     deployment:
       "Designed for local Python 3.11+ execution with virtual environment setup, requirements installation, .env credentials, and log review through logs/trading_bot.log.",
+  },
+  {
+    name: "TaskPulse",
+    subtitle: "Task Management App with REST API",
+    tech: ["React", "Vite", "Node.js", "Express.js", "MongoDB", "Mongoose", "JWT", "bcryptjs", "Axios", "Swagger UI"],
+    problem:
+      "TaskPulse helps users manage personal work while giving admins a broader task-management view across the system.",
+    how:
+      "The app combines a Node.js and Express backend with MongoDB via Mongoose, JWT-protected routes, bcryptjs password hashing, auth rate limiting, Swagger UI API documentation, and a dark React/Vite frontend with Axios API calls.",
+    value:
+      "It demonstrates a clean full-stack architecture with separated routes, controllers, middleware, and models, making the system easier to extend with new role-based task features.",
+    features: [
+      "User signup and login",
+      "JWT-protected task routes",
+      "Role-based user and admin access",
+      "Kanban-style Todo, In Progress, and Done dashboard",
+      "bcryptjs password hashing",
+      "express-rate-limit protection on auth routes",
+      "Swagger UI interactive API documentation",
+      "Seed script for automatic admin account creation",
+    ],
+    deployment:
+      "Runs locally with a backend .env file for MongoDB connection string, JWT secret, and port, plus separate backend and frontend development servers.",
+  },
+  {
+    name: "Bitcoin Sentiment x Hyperliquid Trader Performance Analysis",
+    subtitle: "Data Science Trading Behaviour Analysis",
+    tech: ["Python", "Jupyter Notebook", "Data Cleaning", "EDA", "Sentiment Analysis", "Visualization", "CSV Analysis"],
+    problem:
+      "The analysis investigates how Bitcoin Fear & Greed sentiment regimes connect with real Hyperliquid perpetual futures trader performance.",
+    how:
+      "The notebook loads and cleans Bitcoin Fear & Greed Index data and 211,224 Hyperliquid trade records, computes Net PnL, merges sentiment by date, and analyzes average PnL, win rate, volume, top coins, directional bias, and daily PnL overlays.",
+    value:
+      "It surfaces trading-behaviour patterns from real data, including how fear, greed, volume, directional bias, and PnL magnitude relate across 2024 Hyperliquid activity.",
+    features: [
+      "211,224 real Hyperliquid trades analyzed",
+      "Bitcoin Fear & Greed Index merged with trade data",
+      "Date parsing, dtype fixes, null handling, and Net PnL computation",
+      "Sentiment distribution and PnL distribution analysis",
+      "Average PnL, win rate, and volume by sentiment",
+      "BUY/SELL directional bias by sentiment",
+      "Daily Net PnL overlaid with Fear & Greed index",
+      "10 generated charts covering sentiment, PnL, volume, top coins, and boxplots",
+    ],
+    deployment:
+      "Delivered as a local Jupyter Notebook workflow using analysis.ipynb, requirements.txt, fear_greed_index.csv, and historical_data.csv.",
   },
   {
     name: "Bank Management System",
@@ -208,11 +254,12 @@ export const experiences = [
 
 export const skills = [
   { group: "Languages", items: ["JavaScript", "Python", "Java", "C++", "C", "SQL", "HTML", "CSS"] },
-  { group: "Frameworks & Tools", items: ["React", "Vite", "Node.js", "Express.js", "FastAPI", "Tailwind CSS", "Chart.js", "Leaflet", "Pygame", "Git/GitHub", "Vercel", "Render"] },
-  { group: "Backend", items: ["Node.js", "Express.js", "FastAPI"] },
+  { group: "Frameworks & Tools", items: ["React", "Vite", "Node.js", "Express.js", "FastAPI", "Tailwind CSS", "Chart.js", "Leaflet", "Pygame", "Axios", "Swagger UI", "Jupyter Notebook", "Git/GitHub", "Vercel", "Render"] },
+  { group: "Backend", items: ["Node.js", "Express.js", "FastAPI", "JWT", "bcryptjs", "express-rate-limit", "REST APIs"] },
   { group: "Databases", items: ["MongoDB", "Mongoose", "ChromaDB", "File I/O"] },
   { group: "AI & ML", items: ["RAG Pipelines", "OpenAI Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings", "BAAI/bge-small-en"] },
-  { group: "Concepts", items: ["REST API", "SSE Streaming", "JWT Auth", "DSA", "OOP", "DBMS", "OS", "AI/ML", "IoT", "CI/CD", "Cybersecurity"] },
+  { group: "Data Science", items: ["Data Cleaning", "EDA", "Sentiment Analysis", "Trader Performance Analysis", "CSV Analysis", "Data Visualization", "Win Rate Analysis", "PnL Analysis"] },
+  { group: "Concepts", items: ["REST API", "SSE Streaming", "JWT Auth", "Role-Based Access", "Rate Limiting", "DSA", "OOP", "DBMS", "OS", "AI/ML", "IoT", "CI/CD", "Cybersecurity"] },
   { group: "Soft Skills", items: ["Leadership", "Team Collaboration", "Critical Problem Solving", "Creative Thinking", "Time Management"] },
 ];
 

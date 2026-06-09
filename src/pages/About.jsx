@@ -1,4 +1,3 @@
-import { GraduationCap, Layers3 } from "lucide-react";
 import { Page, PageHeader } from "../components/Page.jsx";
 import SectionTitle from "../components/SectionTitle.jsx";
 import TiltCard from "../components/TiltCard.jsx";
@@ -17,10 +16,7 @@ export default function About() {
           <div className="grid gap-5 md:grid-cols-2">
             {skills.map((skill, index) => (
               <TiltCard key={skill.group} delay={index * 0.04} className={index === 0 ? "panel-hot p-7" : "p-7"}>
-                <div className="mb-5 flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-cyan-100/20 bg-cyan-100/10 text-cyan-100">
-                    <Layers3 size={20} />
-                  </div>
+                <div className="mb-5">
                   <h2 className="display text-2xl font-black text-white">{skill.group}</h2>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -38,9 +34,6 @@ export default function About() {
         <div>
           <SectionTitle label="Education" title="Academic timeline" />
           <TiltCard className="p-8">
-            <div className="mb-7 flex h-14 w-14 items-center justify-center rounded-lg border border-cyan-100/20 bg-cyan-100/10 text-cyan-100">
-              <GraduationCap size={26} />
-            </div>
             <div className="grid gap-4">
               {education.items.map((item) => (
                 <div key={`${item.institute}-${item.year}`} className="border-l-2 border-cyan-100/40 bg-white/[0.045] p-5">

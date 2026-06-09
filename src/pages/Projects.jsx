@@ -1,13 +1,6 @@
-import { ArrowRight, ExternalLink } from "lucide-react";
 import { Page, PageHeader } from "../components/Page.jsx";
 import TiltCard from "../components/TiltCard.jsx";
 import { projects } from "../data/portfolio.js";
-
-const visualClass = {
-  "Bank Management System": "bank",
-  "Bank Management System C++": "bank",
-  "Plane Shooting Simulation": "game",
-};
 
 export default function Projects() {
   const [featured, ...rest] = projects;
@@ -17,9 +10,9 @@ export default function Projects() {
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <PageHeader eyebrow="Latest Projects" title="Production builds, not template demos.">
           <p>
-            Real projects from the resume: deployed AI video auditing, a full-stack nutrition platform,
-            Java desktop systems, C++ banking simulation, Python game simulation, and a Binance Futures
-            Testnet CLI trading bot.
+            Real projects from the resume and project READMEs: deployed AI video auditing, a full-stack
+            nutrition platform, TaskPulse REST task management, Bitcoin sentiment and trader performance
+            analysis, banking systems, Python simulation, and a Binance Futures Testnet CLI trading bot.
           </p>
         </PageHeader>
         <a
@@ -29,7 +22,6 @@ export default function Projects() {
           className="mono mb-12 inline-flex items-center gap-3 text-sm font-bold tracking-[0.18em] text-cyan-50 transition hover:text-[#00D4FF]"
         >
           View All Projects
-          <ArrowRight size={24} />
         </a>
       </div>
 
@@ -75,9 +67,7 @@ export default function Projects() {
               <div className="mt-auto pt-7">
                 {project.live ? (
                   <ProjectLink href={project.live} label={project.live.includes("github") ? "GitHub Details" : "Live Details"} />
-                ) : (
-                  <span className="mono text-sm font-bold tracking-[0.16em] text-cyan-50">System Details</span>
-                )}
+                ) : null}
               </div>
             </div>
           </TiltCard>
@@ -101,7 +91,7 @@ function ProjectMedia({ project, featured = false }) {
     );
   }
 
-  return <div className={`project-visual ${visualClass[project.name] || ""}`} />;
+  return null;
 }
 
 function ProjectLink({ href, label }) {
@@ -113,7 +103,6 @@ function ProjectLink({ href, label }) {
       className="mono mt-6 inline-flex items-center gap-2 text-sm font-bold tracking-[0.16em] text-cyan-50 hover:text-[#00D4FF]"
     >
       {label}
-      <ExternalLink size={17} />
     </a>
   );
 }

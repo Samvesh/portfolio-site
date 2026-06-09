@@ -128,6 +128,23 @@ a {
   text-shadow: 0 0 42px rgba(0, 212, 255, 0.2);
 }
 
+.hero-rainbow {
+  background: linear-gradient(
+    100deg,
+    #ffffff 0%,
+    #00d4ff 18%,
+    #4facfe 34%,
+    #b56cff 50%,
+    #39ff88 68%,
+    #ff4d5f 84%,
+    #ffffff 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 42px rgba(0, 212, 255, 0.16);
+}
+
 .accent {
   color: #00d4ff;
 }
