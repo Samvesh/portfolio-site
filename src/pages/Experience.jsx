@@ -1,4 +1,5 @@
 import { Page, PageHeader } from "../components/Page.jsx";
+import { Link } from "react-router-dom";
 import { experiences } from "../data/portfolio.js";
 
 export default function Experience() {
@@ -121,9 +122,9 @@ export default function Experience() {
               Available for full-time roles & freelance work
             </p>
           </div>
-          <a href="/contact" className="btn-primary">
+          <Link to="/contact" className="btn-primary">
             Get in Touch
-          </a>
+          </Link>
         </div>
       </div>
     </Page>

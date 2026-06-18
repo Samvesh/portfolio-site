@@ -254,13 +254,10 @@ export const experiences = [
 
 export const skills = [
   { group: "Languages", items: ["JavaScript", "Python", "Java", "C++", "C", "SQL", "HTML", "CSS"] },
-  { group: "Frameworks & Tools", items: ["React", "Vite", "Node.js", "Express.js", "FastAPI", "Tailwind CSS", "Chart.js", "Leaflet", "Pygame", "Axios", "Swagger UI", "Jupyter Notebook", "Git/GitHub", "Vercel", "Render"] },
-  { group: "Backend", items: ["Node.js", "Express.js", "FastAPI", "JWT", "bcryptjs", "express-rate-limit", "REST APIs"] },
+  { group: "Frameworks & Tools", items: ["React", "Vite", "Node.js", "Express.js", "FastAPI", "Tailwind CSS", "Chart.js", "Leaflet", "Pygame", "Git/GitHub", "Vercel", "Render"] },
   { group: "Databases", items: ["MongoDB", "Mongoose", "ChromaDB", "File I/O"] },
-  { group: "AI & ML", items: ["RAG Pipelines", "OpenAI Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings", "BAAI/bge-small-en"] },
-  { group: "Data Science", items: ["Data Cleaning", "EDA", "Sentiment Analysis", "Trader Performance Analysis", "CSV Analysis", "Data Visualization", "Win Rate Analysis", "PnL Analysis"] },
-  { group: "Concepts", items: ["REST API", "SSE Streaming", "JWT Auth", "Role-Based Access", "Rate Limiting", "DSA", "OOP", "DBMS", "OS", "AI/ML", "IoT", "CI/CD", "Cybersecurity"] },
-  { group: "Soft Skills", items: ["Leadership", "Team Collaboration", "Critical Problem Solving", "Creative Thinking", "Time Management"] },
+  { group: "AI & ML", items: ["RAG Pipelines", "OpenAI Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings"] },
+  { group: "Concepts", items: ["REST API", "SSE Streaming", "JWT Auth", "DSA", "OOP", "DBMS", "OS", "AI/ML", "IoT", "CI/CD"] },
 ];
 
 export const education = {

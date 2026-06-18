@@ -44,7 +44,7 @@ export default function Home() {
 
           {/* Eyebrow */}
           <motion.div {...fadeUp(0.12)} className="hero-eyebrow">
-            Full Stack Developer
+            Samvesh | Full Stack Developer
           </motion.div>
 
           {/* Headline */}
@@ -180,11 +180,11 @@ export default function Home() {
             gap: "1rem",
           }}
         >
-          {skills.slice(0, 4).map((group) => (
+          {skills.map((group) => (
             <div key={group.group} className="skill-group">
               <div className="skill-group-name">{group.group}</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-                {group.items.slice(0, 4).map((item) => (
+                {group.items.map((item) => (
                   <span key={item} className="skill-tag">
                     {item}
                   </span>

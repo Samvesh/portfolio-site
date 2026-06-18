@@ -125,7 +125,7 @@ export default function Layout({ children }) {
       {/* ── Footer ── */}
       <footer className="footer">
         <div className="footer-inner">
-          <p className="footer-copy">© 2025 Samvesh Saini. All rights reserved.</p>
+          <p className="footer-copy">Samvesh Saini</p>
           <div className="footer-links">
             <a href={contact.github} target="_blank" rel="noreferrer" className="footer-link">
               GitHub
