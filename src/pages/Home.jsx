@@ -1,51 +1,20 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import TiltCard from "../components/TiltCard.jsx";
 import { Page } from "../components/Page.jsx";
-import { contact, profile, projects } from "../data/portfolio.js";
-
-const focusCards = [
-  {
-    title: "AI & RAG Systems",
-    text: "Building intelligent applications with RAG, embeddings and LLMs",
-  },
-  {
-    title: "Full Stack Development",
-    text: "React, Node.js, FastAPI and modern scalable architecture",
-  },
-  {
-    title: "APIs & Integrations",
-    text: "REST APIs, SSE Streaming, JWT Auth and third-party integrations",
-  },
-  {
-    title: "Databases",
-    text: "MongoDB, ChromaDB, Vector DBs and efficient data modeling",
-  },
-  {
-    title: "Deployments",
-    text: "Vercel, Render, CI/CD and production-grade deployments",
-  },
-  {
-    title: "2026 Graduate",
-    text: "B.E CSE at Chandigarh University | CGPA: 7.8",
-  },
-];
+import { contact, profile, projects, skills } from "../data/portfolio.js";
 
 const stats = [
-  { value: "8+", label: "Major Projects" },
-  { value: "12+", label: "Certifications" },
-  { value: "10+", label: "Technologies" },
-  { value: "100%", label: "Dedication" },
+  { value: "8+", label: "Projects", sub: "Production builds" },
+  { value: "12+", label: "Certifications", sub: "Coursera · NPTEL" },
+  { value: "2+", label: "Internships", sub: "Web & CRM" },
+  { value: "B.Tech", label: "Computer Science", sub: "Chandigarh University" },
 ];
 
-const arsenal = [
-  { title: "Frontend", text: "React, Vite, Tailwind CSS, Chart.js, Leaflet" },
-  { title: "Backend", text: "Node.js, Express.js, FastAPI, REST APIs" },
-  { title: "Databases", text: "MongoDB, Mongoose, ChromaDB, File I/O" },
-  { title: "AI / ML", text: "RAG, OpenAI Whisper, Embeddings, Gemini 1.5" },
-  { title: "Data Science", text: "Data Cleaning, EDA, Sentiment Analysis, Visualization" },
-  { title: "Languages", text: "JavaScript, Python, Java, C++, C, SQL, HTML, CSS" },
-];
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 22 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] },
+});
 
 export default function Home() {
   const featured = projects[0];
@@ -53,148 +22,434 @@ export default function Home() {
 
   return (
     <Page>
-      <section className="grid min-h-[calc(100vh-11rem)] items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
-        <div>
-          <motion.div
-            initial={{ opacity: 0, x: -18 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 2.35, duration: 0.6 }}
-            className="mono mb-8 inline-flex items-center rounded-full border border-cyan-200/30 bg-white/[0.045] px-5 py-2.5 text-sm font-bold tracking-[0.02em] text-cyan-50"
-          >
-            <span className="mr-3 h-2 w-2 rounded-full bg-[#00D4FF] shadow-[0_0_16px_rgba(0,212,255,0.8)]" />
-            system_status: online
+      {/* ── Hero ─────────────────────────────────────── */}
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr auto",
+          gap: "3rem",
+          alignItems: "center",
+          minHeight: "calc(100vh - 68px - 8rem)",
+          paddingBottom: "3rem",
+        }}
+      >
+        <div style={{ maxWidth: "600px" }}>
+          {/* Status badge */}
+          <motion.div {...fadeUp(0.05)} style={{ marginBottom: "1.75rem" }}>
+            <span className="status-badge">
+              <span className="status-dot" />
+              Available for work
+            </span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 2.45 }}
-            className="hero-rainbow display max-w-5xl text-[2.9rem] font-black leading-[1.05] sm:text-[4rem] lg:text-[4.65rem]"
-          >
-            Building AI-Powered Products.
-            <span className="block">
-              Full Stack Developer focused on RAG systems, APIs and scalable web applications.
-            </span>
+          {/* Eyebrow */}
+          <motion.div {...fadeUp(0.12)} className="hero-eyebrow">
+            Full Stack Developer
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h1 {...fadeUp(0.18)} className="hero-h1">
+            Crafting digital
+            <br />
+            solutions with
+            <br />
+            <span className="hero-h1-italic">purpose.</span>
           </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 2.62 }}
-            className="mt-7 max-w-3xl text-lg leading-8 text-slate-300"
-          >
-            {profile.intro}
+          {/* Sub */}
+          <motion.p {...fadeUp(0.26)} className="hero-sub">
+            {profile.tagline}
           </motion.p>
 
+          {/* CTA row */}
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 2.76 }}
-            className="mt-8 flex flex-wrap gap-4"
+            {...fadeUp(0.34)}
+            style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap" }}
           >
-            <Link
-              to="/projects"
-              className="mono inline-flex min-h-14 items-center rounded-xl bg-gradient-to-r from-[#4FACFE] to-[#00D4FF] px-8 text-sm font-bold text-[#0A0A0A] transition hover:-translate-y-1 hover:shadow-[0_0_35px_rgba(0,212,255,0.28)]"
-            >
-              View Projects
+            <Link to="/projects" className="btn-primary">
+              View My Work
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M2 7h10M8 3l4 4-4 4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </Link>
-            <a
-              href={contact.github}
-              target="_blank"
-              rel="noreferrer"
-              className="mono inline-flex min-h-14 items-center rounded-xl border border-cyan-100/35 px-8 text-sm font-bold text-cyan-50 transition hover:-translate-y-1 hover:bg-cyan-100 hover:text-[#0A0A0A]"
-            >
-              View GitHub
-            </a>
-            <a
-              href={contact.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="mono inline-flex min-h-14 items-center rounded-xl border border-cyan-100/35 px-6 text-sm font-bold text-cyan-50 transition hover:-translate-y-1 hover:bg-cyan-100 hover:text-[#0A0A0A]"
-            >
-              LinkedIn
+            <a href={contact.resume} download className="btn-secondary">
+              Download Resume
             </a>
           </motion.div>
+
+          {/* Italic script — like reference image */}
+          <motion.p
+            {...fadeUp(0.44)}
+            style={{
+              marginTop: "2.5rem",
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontStyle: "italic",
+              fontSize: "0.82rem",
+              lineHeight: "2",
+              color: "var(--muted)",
+            }}
+          >
+            Clean code.
+            <br />
+            Thoughtful design.
+            <br />
+            Impactful solutions.
+          </motion.p>
         </div>
 
+        {/* ── Geometric Art ── */}
         <motion.div
-          initial={{ opacity: 0, x: 34 }}
+          initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 2.7 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          style={{ display: "flex", justifyContent: "flex-end" }}
+          className="hero-geo-wrap"
         >
-          <TiltCard className="panel-hot p-7">
-            <p className="mb-6 text-sm font-bold text-[#00D4FF]">Currently focused on</p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {focusCards.map((card) => (
-                <div key={card.title} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-                  <h2 className="text-base font-bold text-white">{card.title}</h2>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">{card.text}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 grid gap-4 rounded-2xl border border-white/10 bg-white/[0.045] p-5 sm:grid-cols-4">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-2xl font-semibold text-white">{stat.value}</p>
-                  <p className="text-sm text-slate-300">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </TiltCard>
+          <HeroGeo />
         </motion.div>
       </section>
 
-      <section className="grid gap-8 border-t border-white/10 py-8 lg:grid-cols-[1.05fr_0.95fr]">
-        <div>
-          <p className="mb-4 text-sm font-bold text-white">Featured Projects</p>
-          <div className="grid gap-4">
-            <TiltCard className="project-card p-5">
-              <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-                <div>
-                  <div className="mb-3 flex items-center gap-3">
-                    <h2 className="text-2xl font-bold text-white">{featured.name}</h2>
-                    <span className="rounded-full border border-cyan-100/30 px-3 py-1 text-xs text-[#00D4FF]">Featured</span>
-                  </div>
-                  <p className="text-sm text-slate-300">{featured.subtitle}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {featured.tech.slice(0, 6).map((item) => (
-                      <span key={item} className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-300">
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="mt-4 leading-7 text-slate-300">{featured.problem}</p>
-                </div>
-                <img src={featured.image} alt={`${featured.name} project screenshot`} className="h-full min-h-52 rounded-2xl border border-white/10 object-cover" />
-              </div>
-            </TiltCard>
+      {/* ── Stats Row ─────────────────────────────────── */}
+      <motion.div
+        {...fadeUp(0.42)}
+        className="stats-row"
+        style={{ marginBottom: "5rem" }}
+      >
+        {stats.map((s) => (
+          <div key={s.label} className="stat-cell">
+            <div className="stat-value">{s.value}</div>
+            <div className="stat-label">{s.label}</div>
+            <div className="stat-sub">{s.sub}</div>
+          </div>
+        ))}
+      </motion.div>
 
-            <div className="grid gap-4 md:grid-cols-3">
-              {secondaryProjects.map((project) => (
-                <TiltCard key={project.name} className="p-5">
-                  <h3 className="font-bold text-white">{project.name}</h3>
-                  <p className="mt-2 text-sm text-slate-300">{project.subtitle}</p>
-                </TiltCard>
-              ))}
+      {/* ── About Teaser ──────────────────────────────── */}
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "4rem",
+          alignItems: "start",
+          marginBottom: "5rem",
+        }}
+      >
+        <div>
+          <div className="section-eyebrow">
+            <span className="section-number">01</span>
+            <span style={{ width: "28px", height: "1px", background: "var(--gold)", display: "block" }} />
+            <span className="section-label">About Me</span>
+          </div>
+          <h2 className="section-h2">
+            Turning ideas into
+            <br />
+            real <span className="accent">digital</span> products.
+          </h2>
+          <p
+            style={{
+              marginTop: "1.25rem",
+              fontSize: "0.9rem",
+              lineHeight: "1.85",
+              color: "var(--muted)",
+              maxWidth: "44ch",
+            }}
+          >
+            {profile.intro}
+          </p>
+          <div style={{ marginTop: "1.75rem" }}>
+            <Link to="/about" className="btn-ghost">
+              More About Me
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+
+        {/* Skill tags preview */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "1rem",
+          }}
+        >
+          {skills.slice(0, 4).map((group) => (
+            <div key={group.group} className="skill-group">
+              <div className="skill-group-name">{group.group}</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                {group.items.slice(0, 4).map((item) => (
+                  <span key={item} className="skill-tag">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Featured Projects ──────────────────────────── */}
+      <section style={{ marginBottom: "5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            marginBottom: "2rem",
+          }}
+        >
+          <div>
+            <div className="section-eyebrow">
+              <span className="section-number">02</span>
+              <span style={{ width: "28px", height: "1px", background: "var(--gold)", display: "block" }} />
+              <span className="section-label">Selected Work</span>
+            </div>
+            <h2 className="section-h2">Featured projects</h2>
+          </div>
+          <Link to="/projects" className="btn-ghost" style={{ marginBottom: "0.25rem" }}>
+            All Projects
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+        </div>
+
+        {/* Featured card */}
+        <div className="project-card" style={{ marginBottom: "1.25rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <div className="project-img-wrap" style={{ minHeight: "280px" }}>
+              <img
+                src={featured.image}
+                alt={featured.name}
+                className="project-img"
+                style={{ height: "100%", minHeight: "280px" }}
+              />
+            </div>
+            <div className="project-body">
+              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.75rem" }}>
+                <span className="featured-badge">Featured</span>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "0.5rem" }}>
+                {featured.tech.slice(0, 5).map((t) => (
+                  <span key={t} className="project-tech-tag">{t}</span>
+                ))}
+              </div>
+              <h3 className="project-name">{featured.name}</h3>
+              <p className="project-subtitle">{featured.subtitle}</p>
+              <p className="project-desc">{featured.problem}</p>
+              <div className="project-links-row">
+                {featured.live && !featured.live.includes("github") && (
+                  <a href={featured.live} target="_blank" rel="noreferrer" className="project-link-btn">
+                    Live Link
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                  </a>
+                )}
+                {featured.live && featured.live.includes("github") && (
+                  <a href={featured.live} target="_blank" rel="noreferrer" className="project-link-btn github-btn">
+                    GitHub Link
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        <div>
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <p className="text-sm font-bold text-white">Tech Stack Arsenal</p>
-            <p className="text-sm text-slate-400">Explore technologies I work with</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {arsenal.map((item) => (
-              <TiltCard key={item.title} className="p-5">
-                <h3 className="font-bold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{item.text}</p>
-              </TiltCard>
-            ))}
-          </div>
+        {/* Secondary 3 */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
+          {secondaryProjects.map((project) => (
+            <div key={project.name} className="project-card">
+              {project.image && (
+                <div className="project-img-wrap" style={{ height: "160px" }}>
+                  {project.image.endsWith(".svg") ? (
+                    <div style={{ height: "100%", display: "grid", placeItems: "center", background: "var(--cream-dark)" }}>
+                      <img src={project.image} alt={project.name} style={{ width: "80px", height: "80px", objectFit: "contain" }} />
+                    </div>
+                  ) : (
+                    <img src={project.image} alt={project.name} className="project-img" style={{ height: "160px" }} />
+                  )}
+                </div>
+              )}
+              <div className="project-body">
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginBottom: "0.5rem" }}>
+                  {project.tech.slice(0, 3).map((t) => (
+                    <span key={t} className="project-tech-tag">{t}</span>
+                  ))}
+                </div>
+                <h3 className="project-name" style={{ fontSize: "1.05rem" }}>{project.name}</h3>
+                <p className="project-subtitle">{project.subtitle}</p>
+                <div className="project-links-row">
+                  {project.live && !project.live.includes("github") && (
+                    <a href={project.live} target="_blank" rel="noreferrer" className="project-link-btn">
+                      Live Link
+                      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                    </a>
+                  )}
+                  {project.live && project.live.includes("github") && (
+                    <a href={project.live} target="_blank" rel="noreferrer" className="project-link-btn github-btn">
+                      GitHub Link
+                      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </Page>
+  );
+}
+
+/* ── Hero Geometric Composition ── */
+function HeroGeo() {
+  return (
+    <div
+      className="float-geo"
+      style={{
+        position: "relative",
+        width: "360px",
+        height: "380px",
+        flexShrink: 0,
+      }}
+    >
+      {/* Dot grid top-right */}
+      <div
+        style={{
+          position: "absolute",
+          top: "6%",
+          right: "2%",
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 8px)",
+          gap: "7px",
+        }}
+      >
+        {Array.from({ length: 25 }).map((_, i) => (
+          <span
+            key={i}
+            style={{
+              width: "3px",
+              height: "3px",
+              borderRadius: "50%",
+              background: "#a8a49c",
+              display: "block",
+              opacity: 0.7,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Large cream circle */}
+      <div
+        style={{
+          position: "absolute",
+          top: "4%",
+          right: "10%",
+          width: "240px",
+          height: "240px",
+          borderRadius: "50%",
+          background: "#e8e0d0",
+          border: "1px solid rgba(26,26,24,0.1)",
+        }}
+      />
+
+      {/* Dark half-moon at bottom */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "5%",
+          left: "8%",
+          width: "200px",
+          height: "100px",
+          borderRadius: "0 0 100px 100px",
+          background: "#1a1a18",
+          transform: "rotate(0deg)",
+        }}
+      />
+
+      {/* Horizontal rule */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "4%",
+          right: "4%",
+          height: "1px",
+          background: "#1a1a18",
+          opacity: 0.35,
+        }}
+      />
+
+      {/* Vertical rule */}
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "4%",
+          bottom: "4%",
+          width: "1px",
+          background: "#1a1a18",
+          opacity: 0.35,
+        }}
+      />
+
+      {/* Gold dot at intersection */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: "12px",
+          height: "12px",
+          borderRadius: "50%",
+          background: "#c9a84c",
+          transform: "translate(-50%, -50%)",
+          boxShadow: "0 0 0 4px rgba(201,168,76,0.18)",
+        }}
+      />
+
+      {/* Small decorative ring */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "18%",
+          right: "8%",
+          width: "56px",
+          height: "56px",
+          borderRadius: "50%",
+          border: "1px solid rgba(26,26,24,0.18)",
+          background: "transparent",
+        }}
+      />
+
+      {/* Italic caption */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "8%",
+          right: "2%",
+          fontFamily: "'Playfair Display', Georgia, serif",
+          fontStyle: "italic",
+          fontSize: "0.6rem",
+          lineHeight: "2.1",
+          color: "#7a7870",
+          textAlign: "right",
+          opacity: 0.8,
+        }}
+      >
+        Clean code.
+        <br />
+        Thoughtful design.
+        <br />
+        Impactful solutions.
+      </div>
+    </div>
   );
 }

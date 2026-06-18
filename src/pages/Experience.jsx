@@ -1,50 +1,131 @@
 import { Page, PageHeader } from "../components/Page.jsx";
-import TiltCard from "../components/TiltCard.jsx";
 import { experiences } from "../data/portfolio.js";
 
 export default function Experience() {
   return (
     <Page>
-      <PageHeader eyebrow="Experience" title="Recent_Activity">
-        <p>
-          Internship work across CRM-assisted outreach, communication campaigns, web page design,
-          responsive improvements, and UI/UX review.
-        </p>
+      <PageHeader eyebrow="Experience" number="03" title="Where I have worked.">
+        Internship work across CRM-assisted outreach, communication campaigns, web page design,
+        responsive improvements, and UI/UX review.
       </PageHeader>
 
-      <section className="grid gap-6">
-        <div className="grid gap-6">
-          {experiences.map((experience, index) => (
-            <TiltCard key={experience.company} delay={index * 0.06} className={index === 0 ? "panel-hot p-8" : "p-8"}>
-              <div className="flex flex-col gap-6">
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                      <p className="mono text-sm font-bold uppercase tracking-[0.2em] text-[#00D4FF]">
-                        {experience.role}
-                      </p>
-                      <h2 className="display mt-2 text-3xl font-black text-slate-100">{experience.company}</h2>
+      <div style={{ display: "grid", gap: "2rem", maxWidth: "860px" }}>
+        {experiences.map((exp, index) => (
+          <div key={exp.company} className="timeline-entry">
+            <div
+              style={{
+                background: "white",
+                border: "1px solid var(--border)",
+                borderRadius: "4px",
+                padding: "2rem",
+                transition: "border-color 0.22s, box-shadow 0.22s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(26,26,24,0.2)";
+                e.currentTarget.style.boxShadow = "0 6px 28px rgba(26,26,24,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              {/* Header row */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "1rem",
+                  marginBottom: "1.5rem",
+                }}
+              >
+                <div>
+                  <div className="timeline-role">{exp.role}</div>
+                  <div className="timeline-company">{exp.company}</div>
+                  {(exp.duration || exp.location) && (
+                    <div className="timeline-meta">
+                      {exp.duration || exp.location}
                     </div>
-                    {(experience.duration || experience.location) && (
-                      <span className="mono rounded-full bg-white/10 px-4 py-2 text-xs font-bold text-cyan-50">
-                        {experience.duration || experience.location}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                    {experience.details.map((detail) => (
-                      <div key={detail} className="mono rounded-lg border border-white/10 bg-white/[0.045] px-4 py-3 text-sm leading-6 text-slate-200">
-                        {detail}
-                      </div>
-                    ))}
-                  </div>
+                  )}
                 </div>
+
+                {/* Index number */}
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: "2.5rem",
+                    fontWeight: 900,
+                    color: "var(--cream-dark)",
+                    lineHeight: 1,
+                    userSelect: "none",
+                  }}
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
               </div>
-            </TiltCard>
-          ))}
+
+              {/* Details grid */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: "0.65rem",
+                }}
+              >
+                {exp.details.map((detail) => (
+                  <div key={detail} className="timeline-detail">
+                    {detail}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* ── CTA block ── */}
+        <div
+          style={{
+            padding: "2rem",
+            background: "var(--cream)",
+            border: "1px solid var(--border)",
+            borderRadius: "4px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "1.5rem",
+            flexWrap: "wrap",
+          }}
+        >
+          <div>
+            <p
+              style={{
+                fontSize: "0.65rem",
+                fontWeight: 600,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "var(--gold)",
+                marginBottom: "0.4rem",
+              }}
+            >
+              Open to opportunities
+            </p>
+            <p
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: "1.15rem",
+                fontWeight: 700,
+                color: "var(--ink)",
+                margin: 0,
+              }}
+            >
+              Available for full-time roles & freelance work
+            </p>
+          </div>
+          <a href="/contact" className="btn-primary">
+            Get in Touch
+          </a>
         </div>
-      </section>
+      </div>
     </Page>
   );
 }

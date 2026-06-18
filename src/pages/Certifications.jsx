@@ -1,83 +1,110 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Page, PageHeader } from "../components/Page.jsx";
-import TiltCard from "../components/TiltCard.jsx";
 import { certificationFilters, certifications } from "../data/portfolio.js";
 
 export default function Certifications() {
   const [activeFilter, setActiveFilter] = useState("All");
 
-  const visibleCertifications = useMemo(() => {
+  const visible = useMemo(() => {
     if (activeFilter === "All") return certifications;
-    return certifications.filter((certification) => certification.category === activeFilter);
+    return certifications.filter((c) => c.category === activeFilter);
   }, [activeFilter]);
 
   return (
     <Page>
-      <PageHeader eyebrow="Certifications" title="Credentials that strengthen the stack.">
-        <p>
-          Coursera, NPTEL, and LinkedIn Learning certifications grouped by practical engineering
-          direction. Issue dates were not present in the provided information, so the cards avoid
-          inventing dates.
-        </p>
+      <PageHeader
+        eyebrow="Credentials"
+        number="04"
+        title="Certifications that strengthen the stack."
+      >
+        Coursera, NPTEL, and LinkedIn Learning certifications grouped by practical engineering
+        direction.
       </PageHeader>
 
-      <section className="mb-10 flex flex-wrap gap-3">
-        {certificationFilters.map((filter) => {
-          const active = activeFilter === filter;
-          return (
-            <button
-              key={filter}
-              type="button"
-              onClick={() => setActiveFilter(filter)}
-              className={[
-                "mono inline-flex items-center rounded-lg border px-4 py-3 text-sm font-bold tracking-[0.08em] transition",
-                active
-                  ? "border-cyan-100 bg-cyan-100 text-[#0A0A0A] shadow-[0_0_30px_rgba(0,212,255,0.22)]"
-                  : "border-cyan-100/25 bg-white/5 text-cyan-50 hover:-translate-y-0.5 hover:bg-white/10",
-              ].join(" ")}
-            >
-              {filter}
-            </button>
-          );
-        })}
-      </section>
+      {/* Filter row */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.5rem",
+          marginBottom: "2.5rem",
+        }}
+      >
+        {certificationFilters.map((f) => (
+          <button
+            key={f}
+            type="button"
+            className={`filter-btn${activeFilter === f ? " active" : ""}`}
+            onClick={() => setActiveFilter(f)}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
 
-      <motion.div layout className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {/* Grid */}
+      <motion.div
+        layout
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gap: "1.1rem",
+        }}
+      >
         <AnimatePresence mode="popLayout">
-          {visibleCertifications.map((certification, index) => (
+          {visible.map((cert, i) => (
             <motion.div
-              key={certification.name}
+              key={cert.name}
               layout
-              initial={{ opacity: 0, scale: 0.94, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.94, y: -12 }}
-              transition={{ duration: 0.35, delay: index * 0.025 }}
+              initial={{ opacity: 0, y: 16, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.96 }}
+              transition={{ duration: 0.3, delay: i * 0.03 }}
             >
-              <TiltCard className={index === 0 ? "panel-hot h-full p-7" : "h-full p-7"}>
-                <div className="flex h-full flex-col">
-                  <div className="mb-6 flex items-start justify-end gap-4">
-                    {certification.result && (
-                      <span className="mono rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-[#00D4FF]">
-                        {certification.result}
-                      </span>
-                    )}
-                  </div>
-
-                  <h2 className="display text-2xl font-black leading-tight text-white">{certification.name}</h2>
-
-                  <div className="mono mt-5 grid gap-3 text-sm">
-                    <div className="text-slate-300">
-                      <span className="font-bold text-cyan-50">{certification.organization}</span>
-                    </div>
-                    <div className="w-fit rounded-full border border-cyan-100/25 bg-white/10 px-3 py-1 text-xs font-bold text-[#00D4FF]">
-                      {certification.category}
-                    </div>
-                  </div>
-
-                  <p className="mt-6 flex-1 leading-8 text-slate-300">{certification.description}</p>
+              <div className="cert-card">
+                {/* Org + result row */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: "0.6rem",
+                  }}
+                >
+                  <span className="cert-org">{cert.organization}</span>
+                  {cert.result && (
+                    <span
+                      style={{
+                        fontFamily: "'DM Mono', monospace",
+                        fontSize: "0.62rem",
+                        color: "var(--gold)",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {cert.result}
+                    </span>
+                  )}
                 </div>
-              </TiltCard>
+
+                <h2 className="cert-name">{cert.name}</h2>
+
+                <span className="cert-category" style={{ marginBottom: "0.75rem" }}>
+                  {cert.category}
+                </span>
+
+                <p className="cert-desc">{cert.description}</p>
+
+                {/* Decorative bottom line */}
+                <div
+                  style={{
+                    marginTop: "1.25rem",
+                    height: "1px",
+                    background: "linear-gradient(to right, var(--gold), transparent)",
+                    opacity: 0.3,
+                  }}
+                />
+              </div>
             </motion.div>
           ))}
         </AnimatePresence>

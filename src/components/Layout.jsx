@@ -1,7 +1,7 @@
-import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { contact } from "../data/portfolio.js";
+import { GeometricLogo } from "./GeometricLogo.jsx";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -12,119 +12,133 @@ const navItems = [
   { label: "Contact", to: "/contact" },
 ];
 
+// Scroll to top component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname]);
+  return null;
+}
+
 export default function Layout({ children }) {
-  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const smoothX = useSpring(mx, { stiffness: 42, damping: 18 });
-  const smoothY = useSpring(my, { stiffness: 42, damping: 18 });
+  const prevPath = useRef(location.pathname);
 
   useEffect(() => {
-    setOpen(false);
+    setMobileOpen(false);
+    prevPath.current = location.pathname;
   }, [location.pathname]);
 
   useEffect(() => {
-    const updateMouse = (event) => {
-      mx.set((event.clientX / window.innerWidth - 0.5) * 24);
-      my.set((event.clientY / window.innerHeight - 0.5) * 24);
-    };
-
-    window.addEventListener("mousemove", updateMouse);
-    return () => window.removeEventListener("mousemove", updateMouse);
-  }, [mx, my]);
+    const handleScroll = () => setScrolled(window.scrollY > 18);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="min-h-screen text-slate-100">
-      <div className="site-bg" />
-      <div className="noise" />
-      <motion.div
-        className="pointer-events-none fixed inset-x-0 top-0 z-0 h-72 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.14),transparent_38rem)]"
-        style={{ x: smoothX, y: smoothY }}
-      />
+    <div className="site-canvas">
+      <ScrollToTop />
+      <div className="grain" />
 
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#07090b]/90 backdrop-blur-xl">
-        <nav className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 lg:h-[102px] lg:px-10 xl:px-20">
-          <NavLink to="/" className="display text-2xl font-black tracking-wide text-glow lg:text-4xl">
-            SAMVESH
+      {/* ── Navbar ── */}
+      <header className={`navbar${scrolled ? " scrolled" : ""}`}>
+        <div className="nav-inner">
+          {/* Geometric Logo */}
+          <NavLink to="/" aria-label="Home">
+            <GeometricLogo />
           </NavLink>
 
-          <div className="mono hidden items-center gap-7 lg:flex">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                className={({ isActive }) =>
-                  [
-                    "relative py-2 text-sm font-bold tracking-[0.18em] transition",
-                    isActive
-                      ? "text-cyan-50 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-cyan-100"
-                      : "text-slate-400 hover:text-cyan-50",
-                  ].join(" ")
-                }
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
-
-          <a
-            href={contact.resume}
-            download
-            className="mono hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#4FACFE] to-[#00D4FF] px-6 py-3 text-sm font-bold tracking-[0.18em] text-[#0A0A0A] transition hover:-translate-y-0.5 hover:shadow-[0_0_34px_rgba(0,212,255,0.34)] lg:inline-flex"
-          >
-            Resume
-          </a>
-
-          <button
-            type="button"
-            aria-label="Toggle navigation"
-            onClick={() => setOpen((value) => !value)}
-            className="mono inline-flex h-11 items-center justify-center rounded-full border border-cyan-100/20 bg-white/5 px-4 text-xs font-bold tracking-[0.16em] text-cyan-100 lg:hidden"
-          >
-            {open ? "Close" : "Menu"}
-          </button>
-        </nav>
-
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden border-t border-cyan-100/10 bg-[#07090b]/98 lg:hidden"
-            >
-              <div className="mx-auto grid max-w-7xl gap-2 px-5 py-4">
-                {navItems.map((item) => (
+          {/* Desktop Nav */}
+          <nav>
+            <ul className="nav-links">
+              {navItems.map((item) => (
+                <li key={item.to}>
                   <NavLink
-                    key={item.to}
                     to={item.to}
                     className={({ isActive }) =>
-                      [
-                        "mono rounded-lg px-4 py-3 text-sm font-bold tracking-[0.16em] transition",
-                        isActive ? "bg-cyan-100 text-[#0A0A0A]" : "text-slate-300 hover:bg-white/5",
-                      ].join(" ")
+                      `nav-link${isActive ? " active" : ""}`
                     }
                   >
                     {item.label}
                   </NavLink>
-                ))}
-                <a
-                  href={contact.resume}
-                  download
-                  className="mono mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-cyan-100 px-4 py-3 text-sm font-bold tracking-[0.16em] text-[#0A0A0A]"
-                >
-                  Resume
-                </a>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <a
+            href={contact.resume}
+            download
+            className="nav-resume-btn"
+            aria-label="Download Resume"
+          >
+            Resume
+          </a>
+
+          {/* Hamburger */}
+          <button
+            type="button"
+            className="nav-hamburger"
+            aria-label="Toggle menu"
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            <span
+              style={mobileOpen ? { transform: "rotate(45deg) translate(5px, 5px)" } : {}}
+            />
+            <span style={mobileOpen ? { opacity: 0 } : {}} />
+            <span
+              style={mobileOpen ? { transform: "rotate(-45deg) translate(5px, -5px)" } : {}}
+            />
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`mobile-menu${mobileOpen ? " open" : ""}`}>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `mobile-nav-link${isActive ? " active" : ""}`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+          <a
+            href={contact.resume}
+            download
+            className="btn-primary"
+            style={{ alignSelf: "flex-start", marginTop: "0.5rem" }}
+          >
+            Download Resume
+          </a>
+        </div>
       </header>
 
-      <main className="relative z-10 mx-auto min-h-screen max-w-[1440px] px-5 pb-16 pt-28 lg:px-10 lg:pb-24 lg:pt-44 xl:px-20">
-        {children}
-      </main>
+      {/* ── Main Content ── */}
+      <main>{children}</main>
+
+      {/* ── Footer ── */}
+      <footer className="footer">
+        <div className="footer-inner">
+          <p className="footer-copy">© 2025 Samvesh Saini. All rights reserved.</p>
+          <div className="footer-links">
+            <a href={contact.github} target="_blank" rel="noreferrer" className="footer-link">
+              GitHub
+            </a>
+            <a href={contact.linkedin} target="_blank" rel="noreferrer" className="footer-link">
+              LinkedIn
+            </a>
+            <a href={`mailto:${contact.email}`} className="footer-link">
+              Email
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

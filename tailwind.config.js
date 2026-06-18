@@ -4,19 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#06111f",
-        panel: "rgba(9, 22, 40, 0.72)",
-        cyanGlow: "#38d7ff",
-        blueGlow: "#4f8dff",
+        cream: "#f5f0e8",
+        "cream-dark": "#e8e0d0",
+        ink: "#1a1a18",
+        "ink-light": "#2e2e2a",
+        gold: "#c9a84c",
+        muted: "#7a7870",
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["Inter", "ui-sans-serif", "system-ui"],
-        mono: ["IBM Plex Mono", "ui-monospace", "monospace"],
-      },
-      boxShadow: {
-        glow: "0 24px 90px rgba(56, 215, 255, 0.18)",
-        card: "0 24px 80px rgba(0, 0, 0, 0.35)",
+        serif: ["Playfair Display", "Georgia", "serif"],
+        mono: ["DM Mono", "ui-monospace", "monospace"],
       },
     },
   },
