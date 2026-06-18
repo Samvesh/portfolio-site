@@ -14,8 +14,8 @@ export const profile = {
   tagline:
     "Building AI-powered products, RAG systems, APIs, and scalable web applications.",
   intro:
-    "CSE student with full-stack oriented experience building and deploying production-grade web applications. Skilled in React, Node.js, MongoDB, REST APIs, DSA, OOP, cloud deployment, and AI-powered application workflows.",
-    "Passionate about solving real-world problems with clean, scalable, and efficient code. I enjoy building AI-integrated tools, working with data, and creating seamless user experiences that make an impact.",
+    "CSE student with full-stack oriented experience building and deploying production-grade web applications. Skilled in React, Node.js, MongoDB, REST APIs, DSA, OOP, cloud deployment, and AI-powered application workflows."/n
+    "Passionate about solving real-world problems with clean, scalable, and efficient code. I enjoy building AI-integrated tools, working with data, and creating seamless user experiences that make an impact."/n
     "Always learning, always building. Currently exploring advanced AI models, RAG systems, cloud-native architectures, and modern backend workflows to deliver smarter and more intelligent digital solutions.",
 };
 
