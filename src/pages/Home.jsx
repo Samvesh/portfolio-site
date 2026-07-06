@@ -24,6 +24,7 @@ export default function Home() {
     <Page>
       {/* ── Hero ─────────────────────────────────────── */}
       <section
+        className="hero-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr auto",
@@ -132,6 +133,7 @@ export default function Home() {
 
       {/* ── About Teaser ──────────────────────────────── */}
       <section
+        className="about-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
@@ -174,6 +176,7 @@ export default function Home() {
 
         {/* Skill tags preview */}
         <div
+          className="skills-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
@@ -223,7 +226,7 @@ export default function Home() {
 
         {/* Featured card */}
         <div className="project-card" style={{ marginBottom: "1.25rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          <div className="featured-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
             <div className="project-img-wrap" style={{ minHeight: "280px" }}>
               <img
                 src={featured.image}
@@ -263,7 +266,7 @@ export default function Home() {
         </div>
 
         {/* Secondary 3 */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
+        <div className="secondary-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.25rem" }}>
           {secondaryProjects.map((project) => (
             <div key={project.name} className="project-card">
               {project.image && (
@@ -312,11 +315,9 @@ export default function Home() {
 function HeroGeo() {
   return (
     <div
-      className="float-geo"
+      className="float-geo hero-geo-art"
       style={{
         position: "relative",
-        width: "360px",
-        height: "380px",
         flexShrink: 0,
       }}
     >

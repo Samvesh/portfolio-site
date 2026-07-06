@@ -1060,6 +1060,12 @@ a {
   to { width: 100%; }
 }
 
+/* ─── Hero Geometric Art (desktop sizing) ────────────────────── */
+.hero-geo-art {
+  width: 360px;
+  height: 380px;
+}
+
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .nav-links,
@@ -1079,20 +1085,175 @@ a {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     padding-top: calc(68px + 2.5rem);
-  }
-
-  .hero-geo {
-    max-width: 280px;
+    padding-bottom: 4rem;
   }
 
   .hero-h1 {
     font-size: clamp(2.2rem, 8vw, 3.5rem);
+  }
+
+  /* Hero: Stack text above geo art */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    min-height: auto !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .hero-geo-wrap {
+    justify-content: center !important;
+  }
+
+  .hero-geo-art {
+    width: 260px;
+    height: 280px;
+    margin: 0 auto;
+  }
+
+  /* About teaser: Stack */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  /* Skills grid: Keep 2 cols but allow wrapping */
+  .skills-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+
+  /* Featured project card: Stack image above body */
+  .featured-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .featured-grid .project-img-wrap {
+    min-height: 200px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .featured-grid .project-img {
+    min-height: 200px !important;
+    height: 200px !important;
+  }
+
+  .featured-grid .project-body {
+    padding: 1.5rem !important;
+  }
+
+  /* Secondary projects: single column */
+  .secondary-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* About page: Stack skills + education */
+  .about-page-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  /* Contact page: Stack left + right */
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  /* Experience details: single column */
+  .exp-details-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Section headings: slightly smaller */
+  .section-h2 {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+  }
+
+  /* Hero sub text */
+  .hero-sub {
+    font-size: 0.95rem;
+  }
+
+  /* Stat values */
+  .stat-value {
+    font-size: 1.6rem;
+  }
+
+  /* Project body: slightly less padding */
+  .project-body {
+    padding: 1.25rem;
+  }
+
+  /* Certifications grid: allow smaller cards */
+  .cert-card {
+    padding: 1.25rem;
+  }
+
+  /* Footer: center on mobile */
+  .footer-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .footer-links {
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
   .stats-row {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-geo-art {
+    width: 220px;
+    height: 240px;
+  }
+
+  .hero-h1 {
+    font-size: clamp(1.8rem, 9vw, 2.8rem);
+  }
+
+  /* Buttons: full-width on very small screens */
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .stat-cell {
+    padding: 1.1rem 0.75rem;
+  }
+
+  /* Filter buttons: smaller */
+  .filter-btn {
+    font-size: 0.65rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  /* Project name: slightly smaller */
+  .project-name {
+    font-size: 1.1rem;
+  }
+
+  /* Contact geo decoration: hide on very small */
+  .contact-grid .geo-decoration {
+    display: none;
+  }
+
+  /* Nav inner: less padding */
+  .nav-inner {
+    padding: 0 1rem;
+  }
+
+  .page-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
@@ -1102,3 +1263,4 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+

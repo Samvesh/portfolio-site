@@ -10,6 +10,7 @@ export default function About() {
 
       {/* ── Two-col layout: Skills + Education ── */}
       <div
+        className="about-page-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1.3fr 0.7fr",

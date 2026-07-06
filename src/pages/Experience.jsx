@@ -67,6 +67,7 @@ export default function Experience() {
 
               {/* Details grid */}
               <div
+                className="exp-details-grid"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(2, 1fr)",

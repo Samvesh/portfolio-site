@@ -41,6 +41,7 @@ export default function Projects() {
       {/* ── Featured Project (large) ── */}
       <div className="project-card" style={{ marginBottom: "1.5rem" }}>
         <div
+          className="featured-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1.1fr 0.9fr",
