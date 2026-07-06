@@ -19,8 +19,8 @@ export const profile = {
 
 export const stackGroups = [
   { label: "Languages", items: ["JavaScript", "Python", "Java", "C++", "C", "SQL", "HTML", "CSS"] },
-  { label: "Frontend", items: ["React", "Vite", "Tailwind CSS", "Chart.js", "Leaflet"] },
-  { label: "Backend", items: ["Node.js", "Express.js", "FastAPI", "REST API", "SSE"] },
+  { label: "Frontend", items: ["React", "Vite", "Tailwind CSS", "Bootstrap", "Chart.js", "Leaflet"] },
+  { label: "Backend", items: ["Node.js", "Express.js", "FastAPI", "Spring Framework", "REST API", "SSE"] },
   { label: "Databases", items: ["MongoDB", "Mongoose", "ChromaDB", "File I/O"] },
   { label: "Cloud & Tools", items: ["Git/GitHub", "Vercel", "Render", "CI/CD"] },
   { label: "AI & Data", items: ["RAG", "Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings", "EDA", "Data Cleaning"] },
@@ -224,6 +224,21 @@ export const projects = [
 
 export const experiences = [
   {
+    company: "Chandigarh University",
+    role: "Summer Intern",
+    duration: "May 2025 – Jul 2025 · 3 Months",
+    location: "On-site",
+    details: [
+      "Developed responsive web applications using React.js, JavaScript, HTML5, and CSS3 with reusable components",
+      "Strengthened DSA by solving problems on LeetCode covering arrays, linked lists, stacks, queues, trees, sorting, searching, recursion, and dynamic programming",
+      "Designed and built multiple interactive web pages and mini-projects focused on clean UI, responsiveness, and performance",
+      "Worked extensively with SQL including complex queries, joins, subqueries, aggregate functions, normalization, and database design",
+      "Gained hands-on React experience with components, props, state management, hooks, event handling, routing, and API integration",
+      "Collaborated on practical assignments and project-based learning in an intensive software development training environment",
+      "Applied frontend best practices including responsive design, semantic HTML, CSS Flexbox/Grid, and JavaScript ES6+ features",
+    ],
+  },
+  {
     company: "IMUN Virtual Internship Program",
     role: "Intern",
     location: "Remote",
@@ -254,7 +269,7 @@ export const experiences = [
 
 export const skills = [
   { group: "Languages", items: ["JavaScript", "Python", "Java", "C++", "C", "SQL", "HTML", "CSS"] },
-  { group: "Frameworks & Tools", items: ["React", "Vite", "Node.js", "Express.js", "FastAPI", "Tailwind CSS", "Chart.js", "Leaflet", "Pygame", "Git/GitHub", "Vercel", "Render"] },
+  { group: "Frameworks & Tools", items: ["React", "Vite", "Node.js", "Express.js", "FastAPI", "Spring Framework", "Tailwind CSS", "Bootstrap", "Chart.js", "Leaflet", "Pygame", "Git/GitHub", "Vercel", "Render"] },
   { group: "Databases", items: ["MongoDB", "Mongoose", "ChromaDB", "File I/O"] },
   { group: "AI & ML", items: ["RAG Pipelines", "OpenAI Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings"] },
   { group: "Concepts", items: ["REST API", "SSE Streaming", "JWT Auth", "DSA", "OOP", "DBMS", "OS", "AI/ML", "IoT", "CI/CD"] },

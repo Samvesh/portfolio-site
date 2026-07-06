@@ -6,8 +6,8 @@ export default function Experience() {
   return (
     <Page>
       <PageHeader eyebrow="Experience" number="03" title="Where I have worked.">
-        Internship work across CRM-assisted outreach, communication campaigns, web page design,
-        responsive improvements, and UI/UX review.
+        Internship work across full-stack web development, DSA training, CRM-assisted outreach,
+        communication campaigns, web page design, and UI/UX review.
       </PageHeader>
 
       <div style={{ display: "grid", gap: "2rem", maxWidth: "860px" }}>

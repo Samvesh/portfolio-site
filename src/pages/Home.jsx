@@ -6,7 +6,7 @@ import { contact, profile, projects, skills } from "../data/portfolio.js";
 const stats = [
   { value: "8+", label: "Projects", sub: "Production builds" },
   { value: "12+", label: "Certifications", sub: "Coursera · NPTEL" },
-  { value: "2+", label: "Internships", sub: "Web & CRM" },
+  { value: "3+", label: "Internships", sub: "Web, CRM & Dev" },
   { value: "B.Tech", label: "Computer Science", sub: "Chandigarh University" },
 ];
 
