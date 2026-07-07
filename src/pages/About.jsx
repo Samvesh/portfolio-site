@@ -94,10 +94,10 @@ export default function About() {
               backgroundRepeat: "no-repeat",
               borderRadius: "8px",
               overflow: "hidden",
-              padding: "2.25rem 2rem 2rem 2.5rem",
+              padding: "1.25rem 1.5rem 1.25rem 1rem",
               display: "flex",
               alignItems: "flex-start",
-              gap: "1rem",
+              gap: "0.75rem",
             }}
           >
             {/* Quote mark */}
@@ -111,22 +111,24 @@ export default function About() {
                 flexShrink: 0,
               }}
             >
-              {"\u201C\u201C"}
+              “
             </div>
 
             {/* Text */}
-            <div>
+            <div style={{ maxWidth: "55%" }}>
               <p
                 style={{
                   fontFamily: "'Playfair Display', Georgia, serif",
                   fontStyle: "italic",
                   fontSize: "1.15rem",
-                  lineHeight: "1.7",
+                  lineHeight: "1.6",
                   margin: 0,
                   color: "#2c2a26",
                 }}
               >
-                Building things that work beautifully,
+                Building things that work
+                <br />
+                beautifully,
                 <br />
                 not just things that work.
               </p>
