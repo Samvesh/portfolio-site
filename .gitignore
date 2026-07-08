@@ -2,5 +2,10 @@ node_modules/
 dist/
 .env
 .env.local
+.env.production
 .DS_Store
 npm-debug.log*
+
+# Service account key files (never commit secrets)
+**/service-account*.json
+**/portfolio-analytics*.json
