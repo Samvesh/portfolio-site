@@ -5,9 +5,7 @@
  * with a fetch fallback. Zero impact on page performance.
  */
 
-const ANALYTICS_URL =
-  import.meta.env.VITE_ANALYTICS_URL ||
-  "https://portfolio-site-mgc4.onrender.com/api/track";
+const ANALYTICS_URL = import.meta.env.VITE_ANALYTICS_URL;
 
 /* ── Session & Visitor ─────────────────────────────────────────────── */
 
@@ -45,6 +43,8 @@ function buildPayload(eventType, detail = "") {
 /* ── Send helper (sendBeacon → fetch fallback) ─────────────────────── */
 
 function send(eventType, detail) {
+  if (!ANALYTICS_URL) return; // env var not set — skip silently
+
   const payload = buildPayload(eventType, detail);
 
   // sendBeacon is fire-and-forget — ideal for analytics, works on page unload
