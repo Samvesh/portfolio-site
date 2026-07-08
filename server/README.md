@@ -4,7 +4,7 @@ A lightweight Node.js/Express backend that tracks portfolio visitor analytics an
 
 ## Features
 
-- **Single POST endpoint** (`/api/track`) for event tracking
+- **Single POST endpoint** (`/api/ev`) for event tracking
 - **Health check** (`GET /health`) for uptime monitoring
 - Accepts both `application/json` and `text/plain` bodies (supports `navigator.sendBeacon`)
 - Server-side device/browser/OS detection via `ua-parser-js`
@@ -79,7 +79,7 @@ npm start       # production mode
 curl http://localhost:3000/health
 
 # Track an event
-curl -X POST http://localhost:3000/api/track \
+curl -X POST http://localhost:3000/api/ev \
   -H "Content-Type: application/json" \
   -d '{
     "sessionId": "test-123",
@@ -136,7 +136,7 @@ curl https://your-service.onrender.com/health
 Point your frontend analytics calls to the Render URL:
 
 ```js
-const ANALYTICS_URL = "https://your-service.onrender.com/api/track";
+const ANALYTICS_URL = "https://your-service.onrender.com/api/ev";
 ```
 
 ---
@@ -146,7 +146,7 @@ const ANALYTICS_URL = "https://your-service.onrender.com/api/track";
 ```js
 // Fire-and-forget with sendBeacon (works on page unload)
 navigator.sendBeacon(
-  "https://your-service.onrender.com/api/track",
+  "https://your-service.onrender.com/api/ev",
   JSON.stringify({
     sessionId: crypto.randomUUID(),
     eventType: "page_view",

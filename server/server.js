@@ -171,7 +171,7 @@ app.get("/health", (_req, res) => {
 
 // ─── Track Endpoint ─────────────────────────────────────────────────────────────
 
-app.post("/api/track", async (req, res) => {
+app.post("/api/ev", async (req, res) => {
   // 1. Rate limiting
   const ip = getVisitorIP(req);
   if (isRateLimited(ip)) {
