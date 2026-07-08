@@ -7,7 +7,7 @@
 
 const ANALYTICS_URL =
   import.meta.env.VITE_ANALYTICS_URL ||
-  "https://portfolio-site-5rxo.onrender.com/api/track";
+  "https://portfolio-site-mgc4.onrender.com/api/track";
 
 /* ── Session & Visitor ─────────────────────────────────────────────── */
 
