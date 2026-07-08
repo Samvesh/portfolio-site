@@ -116,6 +116,29 @@ export const projects = [
       "Designed for local Python 3.11+ execution with virtual environment setup, requirements installation, .env credentials, and log review through logs/trading_bot.log.",
   },
   {
+    name: "Product Streamer",
+    subtitle: "Cursor-Paginated Product Browser",
+    live: "https://product-stream.vercel.app/",
+    tech: ["Node.js", "Express.js", "PostgreSQL", "Neon", "React", "Vite", "Vercel", "Render"],
+    problem:
+      "Browsing large product catalogs breaks with traditional OFFSET pagination when data changes, causing duplicates or skipped items at scale.",
+    how:
+      "Product Streamer uses keyset cursor pagination with a composite index on created_at and id. Each page request seeks directly via an index lookup instead of scanning and discarding rows, keeping every page equally fast.",
+    value:
+      "It guarantees zero duplicates and zero skipped products even during concurrent writes, verified by an automated correctness test inserting rows mid-pagination across 1,000 pages.",
+    features: [
+      "Keyset cursor pagination over 200k products",
+      "Composite index for O(log N) page seeks",
+      "Zero duplicates and zero skips under concurrent writes",
+      "Category filtering with cursor support",
+      "Batch seeding of 200k rows in under a minute",
+      "Automated pagination correctness test",
+      "Infinite scroll with IntersectionObserver",
+    ],
+    deployment:
+      "Frontend deployed on Vercel with the Express backend on Render, using Neon pooled Postgres connections.",
+  },
+  {
     name: "TaskPulse",
     subtitle: "Task Management App with REST API",
     tech: ["React", "Vite", "Node.js", "Express.js", "MongoDB", "Mongoose", "JWT", "bcryptjs", "Axios", "Swagger UI"],
