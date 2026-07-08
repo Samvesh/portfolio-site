@@ -1,5 +1,6 @@
 import { Page, PageHeader } from "../components/Page.jsx";
 import { contact } from "../data/portfolio.js";
+import { trackContactClick, trackResumeDownload } from "../analytics.js";
 
 const contactItems = [
   {
@@ -65,7 +66,7 @@ export default function Contact() {
             message and I'll get back within 24 hours.
           </p>
 
-          <a href={`mailto:${contact.email}`} className="btn-primary">
+          <a href={`mailto:${contact.email}`} className="btn-primary" onClick={() => trackContactClick("email")}>
             Send an Email
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path
@@ -156,7 +157,7 @@ export default function Contact() {
               : {};
 
             return (
-              <Wrapper key={item.label} {...wrapperProps} className="contact-item">
+              <Wrapper key={item.label} {...wrapperProps} className="contact-item" onClick={() => item.href && trackContactClick(item.label.toLowerCase())}>
                 <div className="contact-icon">
                   <Icon />
                 </div>
@@ -173,6 +174,7 @@ export default function Contact() {
             href={contact.resume}
             download
             className="contact-item"
+            onClick={() => trackResumeDownload()}
             style={{ borderColor: "var(--border-gold)", background: "rgba(201,168,76,0.04)" }}
           >
             <div

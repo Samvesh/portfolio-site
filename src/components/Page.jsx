@@ -1,8 +1,15 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { trackPageView } from "../analytics.js";
 
 export function Page({ children }) {
   const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div

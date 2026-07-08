@@ -1,5 +1,6 @@
 import { Page, PageHeader } from "../components/Page.jsx";
 import { projects } from "../data/portfolio.js";
+import { trackProjectClick } from "../analytics.js";
 
 export default function Projects() {
   const [featured, ...rest] = projects;
@@ -87,6 +88,7 @@ export default function Projects() {
                   target="_blank"
                   rel="noreferrer"
                   className="project-link-btn"
+                  onClick={() => trackProjectClick(featured.name)}
                 >
                   Live Link
                   <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
@@ -206,6 +208,7 @@ function ProjectCard({ project }) {
               target="_blank"
               rel="noreferrer"
               className="project-link-btn"
+              onClick={() => trackProjectClick(project.name)}
             >
               Live Link
               <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
@@ -219,6 +222,7 @@ function ProjectCard({ project }) {
               target="_blank"
               rel="noreferrer"
               className="project-link-btn github-btn"
+              onClick={() => trackProjectClick(project.name)}
             >
               GitHub Link
               <svg width="11" height="11" viewBox="0 0 11 11" fill="none">

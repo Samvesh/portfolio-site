@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Page } from "../components/Page.jsx";
 import { contact, profile, projects, skills } from "../data/portfolio.js";
+import { trackResumeDownload, trackProjectClick } from "../analytics.js";
 
 const stats = [
   { value: "8+", label: "Projects", sub: "Production builds" },
@@ -79,7 +80,7 @@ export default function Home() {
                 />
               </svg>
             </Link>
-            <a href={contact.resume} download className="btn-secondary">
+            <a href={contact.resume} download className="btn-secondary" onClick={() => trackResumeDownload()}>
               Download Resume
             </a>
           </motion.div>
@@ -249,13 +250,13 @@ export default function Home() {
               <p className="project-desc">{featured.problem}</p>
               <div className="project-links-row">
                 {featured.live && !featured.live.includes("github") && (
-                  <a href={featured.live} target="_blank" rel="noreferrer" className="project-link-btn">
+                  <a href={featured.live} target="_blank" rel="noreferrer" className="project-link-btn" onClick={() => trackProjectClick(featured.name)}>
                     Live Link
                     <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                   </a>
                 )}
                 {featured.live && featured.live.includes("github") && (
-                  <a href={featured.live} target="_blank" rel="noreferrer" className="project-link-btn github-btn">
+                  <a href={featured.live} target="_blank" rel="noreferrer" className="project-link-btn github-btn" onClick={() => trackProjectClick(featured.name)}>
                     GitHub Link
                     <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                   </a>
@@ -290,13 +291,13 @@ export default function Home() {
                 <p className="project-subtitle">{project.subtitle}</p>
                 <div className="project-links-row">
                   {project.live && !project.live.includes("github") && (
-                    <a href={project.live} target="_blank" rel="noreferrer" className="project-link-btn">
+                    <a href={project.live} target="_blank" rel="noreferrer" className="project-link-btn" onClick={() => trackProjectClick(project.name)}>
                       Live Link
                       <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                     </a>
                   )}
                   {project.live && project.live.includes("github") && (
-                    <a href={project.live} target="_blank" rel="noreferrer" className="project-link-btn github-btn">
+                    <a href={project.live} target="_blank" rel="noreferrer" className="project-link-btn github-btn" onClick={() => trackProjectClick(project.name)}>
                       GitHub Link
                       <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                     </a>
