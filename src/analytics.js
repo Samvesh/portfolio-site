@@ -9,6 +9,8 @@ const ANALYTICS_URL = import.meta.env.VITE_ANALYTICS_URL;
 
 /* ── Session & Visitor ─────────────────────────────────────────────── */
 
+const SESSION_START = Date.now();
+
 function getSessionId() {
   let id = sessionStorage.getItem("_sid");
   if (!id) {
@@ -86,9 +88,13 @@ export function trackContactClick(channel) {
   send("contact_click", channel);
 }
 
-/** Track session end — bind to beforeunload */
+/** Track session end with duration — bind to beforeunload */
 export function trackSessionEnd() {
-  send("session_end", "");
+  const elapsed = Math.round((Date.now() - SESSION_START) / 1000);
+  const min = Math.floor(elapsed / 60);
+  const sec = elapsed % 60;
+  const duration = min > 0 ? `${min} min ${sec} sec` : `${sec} sec`;
+  send("session_end", duration);
 }
 
 /* ── Auto-bind session end ─────────────────────────────────────────── */
