@@ -4,27 +4,13 @@ import { useEffect } from "react";
 import { trackPageView } from "../analytics.js";
 
 export function Page({ children }) {
-  const location = useLocation();
-
-  useEffect(() => {
-    trackPageView(location.pathname);
-  }, [location.pathname]);
-
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={location.pathname}
-        className="page-wrap page-enter"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -12 }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <div className="page-wrap">
+      {children}
+    </div>
   );
 }
+
 
 export function PageHeader({ eyebrow, number = "01", title, children }) {
   return (

@@ -8,21 +8,38 @@ import Experience from "./pages/Experience.jsx";
 import Home from "./pages/Home.jsx";
 import Projects from "./pages/Projects.jsx";
 
-export default function App() {
-  const location = useLocation();
+function SinglePageApp() {
+  return (
+    <div className="portfolio-sections">
+      <div id="home" className="portfolio-section">
+        <Home />
+      </div>
+      <div id="projects" className="portfolio-section">
+        <Projects />
+      </div>
+      <div id="experience" className="portfolio-section">
+        <Experience />
+      </div>
+      <div id="certifications" className="portfolio-section">
+        <Certifications />
+      </div>
+      <div id="about" className="portfolio-section">
+        <About />
+      </div>
+      <div id="contact" className="portfolio-section">
+        <Contact />
+      </div>
+    </div>
+  );
+}
 
+export default function App() {
   return (
     <Layout>
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/experience" element={<Experience />} />
-          <Route path="/certifications" element={<Certifications />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </AnimatePresence>
+      <Routes>
+        <Route path="*" element={<SinglePageApp />} />
+      </Routes>
     </Layout>
   );
 }
+

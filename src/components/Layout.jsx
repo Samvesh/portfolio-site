@@ -1,35 +1,27 @@
 import { useEffect, useRef, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { contact } from "../data/portfolio.js";
 import { GeometricLogo } from "./GeometricLogo.jsx";
+import { trackPageView } from "../analytics.js";
 
 const navItems = [
-  { label: "Home", to: "/" },
-  { label: "Projects", to: "/projects" },
-  { label: "Experience", to: "/experience" },
-  { label: "Certifications", to: "/certifications" },
-  { label: "About", to: "/about" },
-  { label: "Contact", to: "/contact" },
+  { label: "Home", to: "/", id: "home" },
+  { label: "Projects", to: "/projects", id: "projects" },
+  { label: "Experience", to: "/experience", id: "experience" },
+  { label: "Certifications", to: "/certifications", id: "certifications" },
+  { label: "About", to: "/about", id: "about" },
+  { label: "Contact", to: "/contact", id: "contact" },
 ];
-
-// Scroll to top component
-function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [pathname]);
-  return null;
-}
 
 export default function Layout({ children }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
-  const prevPath = useRef(location.pathname);
+  const isScrollingToRef = useRef(false);
 
   useEffect(() => {
     setMobileOpen(false);
-    prevPath.current = location.pathname;
   }, [location.pathname]);
 
   useEffect(() => {
@@ -38,16 +30,92 @@ export default function Layout({ children }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Sync URL and tracker with current active scroll section
+  useEffect(() => {
+    const sections = navItems.map((item) => document.getElementById(item.id)).filter(Boolean);
+    const visibleRatios = {};
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (isScrollingToRef.current) return;
+
+        entries.forEach((entry) => {
+          visibleRatios[entry.target.id] = entry.intersectionRatio;
+        });
+
+        let maxRatio = 0;
+        let activeId = "";
+        for (const [id, ratio] of Object.entries(visibleRatios)) {
+          if (ratio > maxRatio) {
+            maxRatio = ratio;
+            activeId = id;
+          }
+        }
+
+        if (activeId && maxRatio > 0.15) {
+          const item = navItems.find((n) => n.id === activeId);
+          if (item && window.location.pathname !== item.to) {
+            navigate(item.to, { replace: true });
+            trackPageView(item.to);
+          }
+        }
+      },
+      {
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        rootMargin: "-68px 0px 0px 0px", // offset by header height
+      }
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+    return () => observer.disconnect();
+  }, [navigate]);
+
+  // Support deep linking on initial page load
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path && path !== "/") {
+      const item = navItems.find((n) => n.to === path);
+      if (item) {
+        isScrollingToRef.current = true;
+        setTimeout(() => {
+          const element = document.getElementById(item.id);
+          if (element) {
+            element.scrollIntoView({ behavior: "instant" });
+          }
+          isScrollingToRef.current = false;
+        }, 150);
+      }
+    }
+  }, []);
+
+  const handleNavClick = (e, item) => {
+    e.preventDefault();
+    const element = document.getElementById(item.id);
+    if (element) {
+      isScrollingToRef.current = true;
+      element.scrollIntoView({ behavior: "smooth" });
+      navigate(item.to, { replace: true });
+      trackPageView(item.to);
+      setTimeout(() => {
+        isScrollingToRef.current = false;
+      }, 800); // release spy lock after scroll finishes
+    }
+    setMobileOpen(false);
+  };
+
   return (
     <div className="site-canvas">
-      <ScrollToTop />
       <div className="grain" />
 
       {/* ── Navbar ── */}
       <header className={`navbar${scrolled ? " scrolled" : ""}`}>
         <div className="nav-inner">
           {/* Geometric Logo */}
-          <NavLink to="/" aria-label="Home">
+          <NavLink
+            to="/"
+            aria-label="Home"
+            onClick={(e) => handleNavClick(e, navItems[0])}
+          >
             <GeometricLogo />
           </NavLink>
 
@@ -58,6 +126,7 @@ export default function Layout({ children }) {
                 <li key={item.to}>
                   <NavLink
                     to={item.to}
+                    onClick={(e) => handleNavClick(e, item)}
                     className={({ isActive }) =>
                       `nav-link${isActive ? " active" : ""}`
                     }
@@ -101,6 +170,7 @@ export default function Layout({ children }) {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={(e) => handleNavClick(e, item)}
               className={({ isActive }) =>
                 `mobile-nav-link${isActive ? " active" : ""}`
               }
