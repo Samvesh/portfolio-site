@@ -92,6 +92,35 @@ function parseDevice(userAgent) {
   return { deviceType, browser: browserStr || "Unknown", os: osStr || "Unknown" };
 }
 
+/** Geolocate IP via free ip-api.com — no API key required, 45 req/min limit */
+async function geolocateIP(ip) {
+  const fallback = { location: "Unknown", isp: "Unknown" };
+  // Skip private / loopback IPs
+  if (!ip || ip === "unknown" || ip.startsWith("127.") || ip === "::1" || ip.startsWith("192.168.") || ip.startsWith("10.")) {
+    return fallback;
+  }
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000); // 3s timeout
+    const res = await fetch(
+      `http://ip-api.com/json/${ip}?fields=status,city,regionName,country,isp`,
+      { signal: controller.signal }
+    );
+    clearTimeout(timeout);
+    const data = await res.json();
+    if (data.status === "success") {
+      const parts = [data.city, data.regionName, data.country].filter(Boolean);
+      return {
+        location: parts.join(", ") || "Unknown",
+        isp: data.isp || "Unknown",
+      };
+    }
+  } catch {
+    // Geolocation is best-effort — never block analytics
+  }
+  return fallback;
+}
+
 function categorizeReferrer(referrer) {
   if (!referrer || referrer === "" || referrer === "direct") return "Direct";
 
@@ -117,7 +146,7 @@ async function appendRowWithRetry(row, attempt = 1) {
   try {
     await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: "Sheet1!A:M",
+      range: "Sheet1!A:T",
       valueInputOption: "USER_ENTERED",
       insertDataOption: "INSERT_ROWS",
       requestBody: { values: [row] },
@@ -198,6 +227,12 @@ app.post("/api/ev", async (req, res) => {
     timezone = "",
     referrer = "",
     visitorType = "",
+    // ── New auto-fetched client fields (no permission required) ──
+    connectionType = "",
+    pageLoadTime = "",
+    touchSupport = "",
+    colorDepth = "",
+    platform = "",
   } = body || {};
 
   if (!eventType) {
@@ -229,14 +264,21 @@ app.post("/api/ev", async (req, res) => {
     hour12: false,
   });
 
-  // 5. Build row in exact column order:
-  //    Timestamp | Session ID | Event Type | IP | Device | Browser | OS |
-  //    Screen Res | Language | Timezone | Referrer | Visitor Type | Detail
+  // 4b. Geolocate visitor IP (best-effort, non-blocking on failure)
+  const { location, isp } = await geolocateIP(ip);
+
+  // 5. Build row in exact column order (19 columns A–T, minus one):
+  //    Timestamp | Session ID | Event Type | IP | Location | ISP | Device |
+  //    Browser | OS | Screen Res | Language | Timezone | Referrer |
+  //    Visitor Type | Connection Type | Page Load Time | Touch Support |
+  //    Color Depth | Platform | Detail
   const row = [
     timestamp,
     sessionId,
     eventType,
     ip,
+    location,
+    isp,
     deviceType,
     browser,
     os,
@@ -245,6 +287,11 @@ app.post("/api/ev", async (req, res) => {
     timezone,
     categorizedReferrer,
     visitorType,
+    connectionType,
+    pageLoadTime,
+    touchSupport,
+    colorDepth,
+    platform,
     typeof detail === "object" ? JSON.stringify(detail) : String(detail),
   ];
 

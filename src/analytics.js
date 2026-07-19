@@ -29,7 +29,16 @@ function getVisitorType() {
 
 /* ── Shared payload builder ────────────────────────────────────────── */
 
+function getPageLoadTime() {
+  try {
+    const nav = performance.getEntriesByType("navigation")[0];
+    if (nav) return `${Math.round(nav.loadEventEnd - nav.startTime)}ms`;
+  } catch { /* ignore */ }
+  return "";
+}
+
 function buildPayload(eventType, detail = "") {
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   return JSON.stringify({
     sessionId: getSessionId(),
     eventType,
@@ -39,6 +48,12 @@ function buildPayload(eventType, detail = "") {
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     referrer: document.referrer || "direct",
     visitorType: getVisitorType(),
+    // ── New auto-fetched fields (no permission required) ──
+    connectionType: conn?.effectiveType || "",
+    pageLoadTime: getPageLoadTime(),
+    touchSupport: navigator.maxTouchPoints > 0 ? "Yes" : "No",
+    colorDepth: `${screen.colorDepth}-bit`,
+    platform: navigator.userAgentData?.platform || navigator.platform || "",
   });
 }
 

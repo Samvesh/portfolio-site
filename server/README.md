@@ -8,11 +8,14 @@ A lightweight Node.js/Express backend that tracks portfolio visitor analytics an
 - **Health check** (`GET /health`) for uptime monitoring
 - Accepts both `application/json` and `text/plain` bodies (supports `navigator.sendBeacon`)
 - Server-side device/browser/OS detection via `ua-parser-js`
+- **IP geolocation** (city, region, country + ISP) via free `ip-api.com` — no API key needed
 - Referrer categorization (LinkedIn / GitHub / Google / Direct / raw domain)
+- Auto-collected browser data: connection type, page load time, touch support, color depth, platform
 - In-memory rate limiting (30 req/IP/min) — no Redis needed
 - Input validation for allowed event types
 - Google Sheets append with 1-retry on transient errors
 - CORS locked to a single allowed origin
+- **Zero user permissions required** — all data is passively available from browser APIs & IP lookup
 
 ## Event Types
 
@@ -24,10 +27,30 @@ A lightweight Node.js/Express backend that tracks portfolio visitor analytics an
 | `resume_download`  | Downloaded the resume        |
 | `contact_click`    | Clicked a contact link       |
 
-## Google Sheet Columns (A–M)
+## Google Sheet Columns (A–T)
 
-| Timestamp | Session ID | Event Type | IP | Device | Browser | OS | Screen Res | Language | Timezone | Referrer | Visitor Type | Detail |
-| --------- | ---------- | ---------- | -- | ------ | ------- | -- | ---------- | -------- | -------- | -------- | ------------ | ------ |
+| Col | Header           | Source                    |
+| --- | ---------------- | ------------------------- |
+| A   | Timestamp        | Server (IST)              |
+| B   | Session ID       | Client (crypto.randomUUID)|
+| C   | Event Type       | Client                    |
+| D   | IP               | Server (request header)   |
+| E   | Location         | Server (ip-api.com)       |
+| F   | ISP              | Server (ip-api.com)       |
+| G   | Device           | Server (ua-parser-js)     |
+| H   | Browser          | Server (ua-parser-js)     |
+| I   | OS               | Server (ua-parser-js)     |
+| J   | Screen Res       | Client (screen.width/height) |
+| K   | Language         | Client (navigator.language)  |
+| L   | Timezone         | Client (Intl API)         |
+| M   | Referrer         | Server (categorized)      |
+| N   | Visitor Type     | Client (localStorage)     |
+| O   | Connection Type  | Client (navigator.connection) |
+| P   | Page Load Time   | Client (Performance API)  |
+| Q   | Touch Support    | Client (maxTouchPoints)   |
+| R   | Color Depth      | Client (screen.colorDepth)|
+| S   | Platform         | Client (navigator.platform)  |
+| T   | Detail           | Client (event-specific)   |
 
 ---
 
