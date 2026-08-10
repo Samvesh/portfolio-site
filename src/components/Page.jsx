@@ -1,8 +1,3 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { trackPageView } from "../analytics.js";
-
 export function Page({ children }) {
   return (
     <div className="page-wrap">

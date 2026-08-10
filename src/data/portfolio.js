@@ -17,14 +17,7 @@ export const profile = {
     "CSE student with full-stack oriented experience building and deploying production-grade web applications. Skilled in React, Node.js, MongoDB, REST APIs, DSA, OOP, cloud deployment, and AI-powered application workflows.\n\n Passionate about solving real-world problems with clean, scalable, and efficient code. I enjoy building AI-integrated tools, working with data, and creating seamless user experiences that make an impact.\n\n Always learning, always building. Currently exploring advanced AI models, RAG systems, cloud-native architectures, and modern backend workflows to deliver smarter and more intelligent digital solutions.",
 };
 
-export const stackGroups = [
-  { label: "Languages", items: ["JavaScript", "Python", "Java", "C++", "C", "SQL", "HTML", "CSS"] },
-  { label: "Frontend", items: ["React", "Vite", "Tailwind CSS", "Bootstrap", "Chart.js", "Leaflet"] },
-  { label: "Backend", items: ["Node.js", "Express.js", "FastAPI", "Spring Framework", "REST API", "SSE"] },
-  { label: "Databases", items: ["MongoDB", "Mongoose", "ChromaDB", "File I/O"] },
-  { label: "Cloud & Tools", items: ["Git/GitHub", "Vercel", "Render", "CI/CD"] },
-  { label: "AI & Data", items: ["RAG", "Whisper", "SentenceTransformers", "Gemini 1.5 Flash", "Vector Embeddings", "EDA", "Data Cleaning"] },
-];
+
 
 export const projects = [
   {

@@ -1,5 +1,4 @@
-import { AnimatePresence } from "framer-motion";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout.jsx";
 import About from "./pages/About.jsx";
 import Certifications from "./pages/Certifications.jsx";
