@@ -30,6 +30,11 @@ export default function Layout({ children }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Track initial page view on first mount
+  useEffect(() => {
+    trackPageView(window.location.pathname || "/");
+  }, []);
+
   // Sync URL and tracker with current active scroll section
   useEffect(() => {
     const sections = navItems.map((item) => document.getElementById(item.id)).filter(Boolean);

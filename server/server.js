@@ -10,13 +10,13 @@ const {
   GOOGLE_SERVICE_ACCOUNT_EMAIL,
   GOOGLE_PRIVATE_KEY,
   SHEET_ID,
-  ALLOWED_ORIGIN,
+  ALLOWED_ORIGIN = "",
   PORT = 3000,
 } = process.env;
 
 if (!GOOGLE_SERVICE_ACCOUNT_EMAIL || !GOOGLE_PRIVATE_KEY || !SHEET_ID) {
   console.error(
-    "❌  Missing required env vars: GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY, SHEET_ID"
+    "❌ Missing required env vars: GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY, SHEET_ID"
   );
   process.exit(1);
 }
@@ -31,10 +31,19 @@ const VALID_EVENT_TYPES = new Set([
 
 // ─── Google Sheets Auth ─────────────────────────────────────────────────────────
 
+// Clean private key: remove wrapping quotes if pasted with them and replace escaped newlines
+const cleanedPrivateKey = (GOOGLE_PRIVATE_KEY || "")
+  .trim()
+  .replace(/^["']|["']$/g, "")
+  .replace(/\\n/g, "\n");
+
+const cleanedEmail = (GOOGLE_SERVICE_ACCOUNT_EMAIL || "").trim();
+const cleanedSheetId = (SHEET_ID || "").trim();
+
 const jwtClient = new google.auth.JWT(
-  GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  cleanedEmail,
   null,
-  GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  cleanedPrivateKey,
   ["https://www.googleapis.com/auth/spreadsheets"]
 );
 
@@ -145,7 +154,7 @@ function categorizeReferrer(referrer) {
 async function appendRowWithRetry(row, attempt = 1) {
   try {
     await sheets.spreadsheets.values.append({
-      spreadsheetId: SHEET_ID,
+      spreadsheetId: cleanedSheetId,
       range: "Sheet1!A:T",
       valueInputOption: "USER_ENTERED",
       insertDataOption: "INSERT_ROWS",
@@ -154,18 +163,18 @@ async function appendRowWithRetry(row, attempt = 1) {
   } catch (err) {
     const status = err?.response?.status || err?.code || "unknown";
     console.error(
-      `⚠️  Sheets API error (attempt ${attempt}): status=${status}, message=${err.message}`
+      `⚠️ Sheets API error (attempt ${attempt}): status=${status}, message=${err.message}`
     );
 
     if (attempt < 2) {
-      console.log("↻  Retrying Sheets API call…");
+      console.log("↻ Retrying Sheets API call…");
       return appendRowWithRetry(row, attempt + 1);
     }
 
     // Log enough detail to debug without leaking the private key
-    console.error("❌  Sheets API call failed after retry.", {
-      spreadsheetId: SHEET_ID,
-      serviceAccountEmail: GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    console.error("❌ Sheets API call failed after retry.", {
+      spreadsheetId: cleanedSheetId,
+      serviceAccountEmail: cleanedEmail,
       errorStatus: status,
       errorMessage: err.message,
     });
@@ -177,10 +186,34 @@ async function appendRowWithRetry(row, attempt = 1) {
 
 const app = express();
 
-// CORS — restricted to the allowed origin
+// Sanitize ALLOWED_ORIGIN: remove newlines, carriage returns, trailing slashes, quotes, and whitespace
+const allowedOrigins = (ALLOWED_ORIGIN || "")
+  .split(/[\r\n,]+/)
+  .map((o) => o.trim().replace(/^["']|["']$/g, "").replace(/\/+$/, ""))
+  .filter(Boolean);
+
+// CORS middleware using dynamic origin function to avoid header formatting errors
 app.use(
   cors({
-    origin: ALLOWED_ORIGIN,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (curl, server-to-server, health pings)
+      if (!origin) return callback(null, true);
+
+      const cleanOrigin = origin.trim().replace(/[\r\n]/g, "").replace(/\/+$/, "");
+
+      if (
+        allowedOrigins.length === 0 ||
+        allowedOrigins.includes(cleanOrigin) ||
+        allowedOrigins.includes("*") ||
+        cleanOrigin.startsWith("http://localhost:") ||
+        cleanOrigin.startsWith("http://127.0.0.1:")
+      ) {
+        return callback(null, true);
+      }
+
+      console.warn(`⚠️ CORS blocked origin: "${origin}". Allowed: [${allowedOrigins.join(", ")}]`);
+      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     methods: ["POST", "GET", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
@@ -194,8 +227,10 @@ app.use(express.text({ type: "text/plain" }));
 
 // ─── Health Check ───────────────────────────────────────────────────────────────
 
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
+app.get("/health", (req, res) => {
+  const ip = getVisitorIP(req);
+  console.log(`🩺 [Health Check] Pinged from ${ip} at ${new Date().toISOString()}`);
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
 // ─── Track Endpoint ─────────────────────────────────────────────────────────────
@@ -204,6 +239,7 @@ app.post("/api/ev", async (req, res) => {
   // 1. Rate limiting
   const ip = getVisitorIP(req);
   if (isRateLimited(ip)) {
+    console.warn(`⚠️ [Rate Limited] IP: ${ip}`);
     return res.status(429).json({ error: "Rate limit exceeded. Try again later." });
   }
 
@@ -213,6 +249,7 @@ app.post("/api/ev", async (req, res) => {
     try {
       body = JSON.parse(body);
     } catch {
+      console.warn(`⚠️ [Bad Request] Invalid JSON from IP: ${ip}`);
       return res.status(400).json({ error: "Invalid JSON in request body." });
     }
   }
@@ -236,16 +273,19 @@ app.post("/api/ev", async (req, res) => {
   } = body || {};
 
   if (!eventType) {
+    console.warn(`⚠️ [Validation] Missing eventType from IP: ${ip}`);
     return res.status(400).json({ error: "Missing required field: eventType" });
   }
 
   if (!VALID_EVENT_TYPES.has(eventType)) {
+    console.warn(`⚠️ [Validation] Invalid eventType "${eventType}" from IP: ${ip}`);
     return res.status(400).json({
       error: `Invalid eventType "${eventType}". Must be one of: ${[...VALID_EVENT_TYPES].join(", ")}`,
     });
   }
 
   if (!sessionId) {
+    console.warn(`⚠️ [Validation] Missing sessionId from IP: ${ip}`);
     return res.status(400).json({ error: "Missing required field: sessionId" });
   }
 
@@ -266,6 +306,10 @@ app.post("/api/ev", async (req, res) => {
 
   // 4b. Geolocate visitor IP (best-effort, non-blocking on failure)
   const { location, isp } = await geolocateIP(ip);
+
+  console.log(
+    `📥 [Event] "${eventType}" | Session: ${sessionId.slice(0, 8)}... | IP: ${ip} | Device: ${deviceType} | Detail: ${typeof detail === "object" ? JSON.stringify(detail) : detail}`
+  );
 
   // 5. Build row in exact column order (19 columns A–T, minus one):
   //    Timestamp | Session ID | Event Type | IP | Location | ISP | Device |
@@ -298,8 +342,10 @@ app.post("/api/ev", async (req, res) => {
   // 6. Append to Google Sheet
   try {
     await appendRowWithRetry(row);
+    console.log(`✅ [Logged] "${eventType}" successfully written to Google Sheet`);
     res.status(200).json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error(`❌ [Failed] Could not record event "${eventType}": ${err.message}`);
     res.status(500).json({ error: "Failed to log event. Please try again." });
   }
 });
@@ -307,7 +353,8 @@ app.post("/api/ev", async (req, res) => {
 // ─── Start Server ───────────────────────────────────────────────────────────────
 
 app.listen(PORT, () => {
-  console.log(`🚀  Analytics server running on port ${PORT}`);
-  console.log(`🔒  CORS origin: ${ALLOWED_ORIGIN}`);
-  console.log(`📊  Sheet ID: ${SHEET_ID}`);
+  console.log(`🚀 Analytics server running on port ${PORT}`);
+  console.log(`🔒 Allowed CORS origins: [${allowedOrigins.join(", ") || "*"}]`);
+  console.log(`📊 Target Google Sheet ID: ${cleanedSheetId}`);
 });
+
