@@ -5,7 +5,9 @@
  * with a fetch fallback. Zero impact on page performance.
  */
 
-const ANALYTICS_URL = import.meta.env.VITE_ANALYTICS_URL;
+const ANALYTICS_URL =
+  import.meta.env.VITE_ANALYTICS_URL ||
+  "https://portfolio-site-4r67.onrender.com/api/ev";
 
 /* ── Session & Visitor ─────────────────────────────────────────────── */
 
