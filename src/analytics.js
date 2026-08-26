@@ -5,9 +5,31 @@
  * with a fetch fallback. Zero impact on page performance.
  */
 
-const ANALYTICS_URL =
+const rawAnalyticsUrl =
   import.meta.env.VITE_ANALYTICS_URL ||
   "https://portfolio-site-4r67.onrender.com/api/ev";
+
+// Automatically normalize URL to ensure it targets /api/ev even if root domain is provided
+function normalizeAnalyticsUrl(url) {
+  if (!url) return "https://portfolio-site-4r67.onrender.com/api/ev";
+  const trimmed = url.trim().replace(/\/+$/, "");
+  if (trimmed.endsWith("/api/ev") || trimmed.endsWith("/api/track")) {
+    return trimmed;
+  }
+  return `${trimmed}/api/ev`;
+}
+
+const ANALYTICS_URL = normalizeAnalyticsUrl(rawAnalyticsUrl);
+
+// Ping /health in background on initial load to wake up Render if sleeping (non-blocking)
+if (typeof window !== "undefined" && ANALYTICS_URL) {
+  try {
+    const healthUrl = ANALYTICS_URL.replace(/\/api\/(ev|track)$/, "/health");
+    fetch(healthUrl, { mode: "no-cors" }).catch(() => {});
+  } catch {
+    /* ignore */
+  }
+}
 
 /* ── Session & Visitor ─────────────────────────────────────────────── */
 
@@ -62,25 +84,30 @@ function buildPayload(eventType, detail = "") {
 /* ── Send helper (sendBeacon → fetch fallback) ─────────────────────── */
 
 function send(eventType, detail) {
-  if (!ANALYTICS_URL) return; // env var not set — skip silently
+  if (!ANALYTICS_URL) return;
 
   const payload = buildPayload(eventType, detail);
 
-  // sendBeacon is fire-and-forget — ideal for analytics, works on page unload
+  let sent = false;
   if (navigator.sendBeacon) {
-    const queued = navigator.sendBeacon(ANALYTICS_URL, payload);
-    if (queued) return;
+    try {
+      sent = navigator.sendBeacon(ANALYTICS_URL, payload);
+    } catch {
+      sent = false;
+    }
   }
 
   // Fallback to fetch (keepalive ensures it survives page unload)
-  fetch(ANALYTICS_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: payload,
-    keepalive: true,
-  }).catch(() => {
-    /* analytics should never break the site */
-  });
+  if (!sent) {
+    fetch(ANALYTICS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
+      keepalive: true,
+    }).catch(() => {
+      /* analytics should never break the site */
+    });
+  }
 }
 
 /* ── Public API ────────────────────────────────────────────────────── */
@@ -119,3 +146,4 @@ export function trackSessionEnd() {
 if (typeof window !== "undefined") {
   window.addEventListener("beforeunload", trackSessionEnd);
 }
+

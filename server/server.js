@@ -52,7 +52,7 @@ const sheets = google.sheets({ version: "v4", auth: jwtClient });
 // ─── In-Memory Rate Limiter ─────────────────────────────────────────────────────
 
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
-const RATE_LIMIT_MAX = 30; // max requests per IP per window
+const RATE_LIMIT_MAX = 60; // max requests per IP per window (allows smooth section navigation)
 const rateLimitMap = new Map(); // ip -> { count, resetAt }
 
 /** Cleans up expired entries every 5 minutes to prevent unbounded memory growth */
@@ -205,6 +205,8 @@ app.use(
         allowedOrigins.length === 0 ||
         allowedOrigins.includes(cleanOrigin) ||
         allowedOrigins.includes("*") ||
+        cleanOrigin.endsWith(".vercel.app") ||
+        cleanOrigin.includes("github.io") ||
         cleanOrigin.startsWith("http://localhost:") ||
         cleanOrigin.startsWith("http://127.0.0.1:")
       ) {
@@ -220,22 +222,22 @@ app.use(
 );
 
 // Parse JSON bodies (application/json)
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 
 // Parse text/plain bodies (navigator.sendBeacon quirk)
-app.use(express.text({ type: "text/plain" }));
+app.use(express.text({ type: ["text/plain", "text/*"], limit: "1mb" }));
 
 // ─── Health Check ───────────────────────────────────────────────────────────────
 
-app.get("/health", (req, res) => {
+app.get(["/", "/health"], (req, res) => {
   const ip = getVisitorIP(req);
   console.log(`🩺 [Health Check] Pinged from ${ip} at ${new Date().toISOString()}`);
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// ─── Track Endpoint ─────────────────────────────────────────────────────────────
+// ─── Track Endpoint (Accepts POST /, /api/ev, and /api/track) ────────────────────
 
-app.post("/api/ev", async (req, res) => {
+app.post(["/", "/api/ev", "/api/track"], async (req, res) => {
   // 1. Rate limiting
   const ip = getVisitorIP(req);
   if (isRateLimited(ip)) {
